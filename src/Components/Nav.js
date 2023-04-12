@@ -1,33 +1,49 @@
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
+import { useState, useEffect } from 'react'
+import { StyleSheet, View, Image, Keyboard } from 'react-native'
 
 export const Nav = () => {
+  const [keyboardIsVisible, setKeyboardIsVisible] = useState(false)
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardIsVisible(true)
+    })
+    Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardIsVisible(false)
+    })
+  }, [])
+
   return (
-    <View style={styles.container}>
-      <View style={styles.navIconContainer}>
-        <Image
-          style={styles.navIcon}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-      </View>
-      <View style={styles.navIconContainer}>
-        <Image
-          style={styles.navIcon}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-      </View>
-      <View style={styles.navIconContainer}>
-        <Image
-          style={styles.navIcon}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-      </View>
-      <View style={styles.navIconContainer}>
-        <Image
-          style={styles.navIconMain}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-      </View>
-    </View>
+    <>
+      {!keyboardIsVisible && (
+        <View style={styles.container}>
+          <View style={styles.navIconContainer}>
+            <Image
+              style={styles.navIcon}
+              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+            />
+          </View>
+          <View style={styles.navIconContainer}>
+            <Image
+              style={styles.navIcon}
+              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+            />
+          </View>
+          <View style={styles.navIconContainer}>
+            <Image
+              style={styles.navIcon}
+              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+            />
+          </View>
+          <View style={styles.navIconContainer}>
+            <Image
+              style={styles.navIconMain}
+              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+            />
+          </View>
+        </View>
+      )}
+    </>
   )
 }
 

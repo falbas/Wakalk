@@ -9,15 +9,23 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Button } from './Components/Button'
+import { SearchByNameModal } from './Components/SearchByNameModal'
+import { SearchByBarcodeModal } from './Components/SearchByBarcodeModal'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+
 import PRODUCTS from './Products'
 
 export const Home = () => {
   const countTextInput = useRef(null)
 
   const [hasPermission, setHasPermission] = useState(null)
+  const [scannerIsVisible, setScannerIsVisible] = useState(false)
+  const [searchByNameModalVisible, setSearchByNameModalVisible] =
+    useState(false)
+  const [searchByBarcodeModalVisible, setSearchByBarcodeModalVisible] =
+    useState(false)
+
   const [scanned, setScanned] = useState(false)
-  const [openScanner, setOpenScanner] = useState(false)
   const [scannedData, setScannedData] = useState({
     barcode: '',
     name: '',
@@ -36,9 +44,14 @@ export const Home = () => {
     getBarCodeScannerPermissions()
   }, [])
 
+  const handleResetButton = () => {
+    setBuyedProducts([])
+    setTotal(0)
+  }
+
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true)
-    setOpenScanner(false)
+    setScannerIsVisible(false)
 
     const product = PRODUCTS.filter((p) => p.barcode === data)[0]
     setScannedData((prev) => {
@@ -55,7 +68,7 @@ export const Home = () => {
 
   const handleOpenScanner = () => {
     setScanned(false)
-    setOpenScanner(!openScanner)
+    setScannerIsVisible(!scannerIsVisible)
   }
 
   const handleBarcodeTextInput = (v) => {
@@ -91,24 +104,51 @@ export const Home = () => {
       scannedData.name !== '' &&
       scannedData.count !== 0
     ) {
-      setBuyedProducts((prev) => [...prev, scannedData])
-      setScanned(false)
-      setTotal(total + scannedData.price * scannedData.count)
-      setScannedData((prev) => {
-        return {
-          ...prev,
-          barcode: '',
-          name: '',
-          count: 0,
-          price: 0,
-        }
-      })
+      const product = PRODUCTS.filter(
+        (p) => p.barcode === scannedData.barcode
+      )[0]
+      if (product !== undefined) {
+        setBuyedProducts((prev) => [...prev, scannedData])
+        setScanned(false)
+        setTotal(total + scannedData.price * scannedData.count)
+        setScannedData((prev) => {
+          return {
+            ...prev,
+            barcode: '',
+            name: '',
+            count: 0,
+            price: 0,
+          }
+        })
+      } else {
+        alert(`Produk ${scannedData.name} tidak ada di etalase`)
+      }
     }
+  }
+
+  const handleOnPressSearchByNameModal = (v) => {
+    setScannedData((prev) => {
+      return {
+        ...prev,
+        name: v,
+      }
+    })
+    setSearchByNameModalVisible(!searchByNameModalVisible)
+  }
+
+  const handleOnPressSearchByBarcodeModal = (v) => {
+    setScannedData((prev) => {
+      return {
+        ...prev,
+        barcode: v,
+      }
+    })
+    setSearchByBarcodeModalVisible(!searchByBarcodeModalVisible)
   }
 
   return (
     <>
-      {!openScanner && (
+      {!scannerIsVisible && (
         <View style={styles.topContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Wakalk</Text>
@@ -116,6 +156,7 @@ export const Home = () => {
               <Button
                 style={styles.resetButton}
                 textStyle={{ color: '#FF0000' }}
+                onPress={handleResetButton}
               >
                 Reset
               </Button>
@@ -145,7 +186,7 @@ export const Home = () => {
         </View>
       )}
 
-      {openScanner && (
+      {scannerIsVisible && (
         <View style={styles.scannerContainer}>
           <BarCodeScanner
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -153,6 +194,7 @@ export const Home = () => {
           />
         </View>
       )}
+
       <View style={styles.bottomContainer}>
         <ScrollView>
           <View>
@@ -162,6 +204,7 @@ export const Home = () => {
               keyboardType="numeric"
               onChangeText={(v) => handleBarcodeTextInput(v)}
               value={scannedData.barcode}
+              onPressIn={() => setSearchByBarcodeModalVisible(true)}
             />
             <View style={styles.iconScanContainer}>
               <TouchableOpacity
@@ -181,6 +224,7 @@ export const Home = () => {
               style={styles.addTextInput}
               onChangeText={(v) => handleNameTextInput(v)}
               value={scannedData.name}
+              onPressIn={() => setSearchByNameModalVisible(true)}
             />
           </View>
           <View>
@@ -198,6 +242,17 @@ export const Home = () => {
           </Button>
         </ScrollView>
       </View>
+
+      <SearchByNameModal
+        visible={searchByNameModalVisible}
+        handler={handleOnPressSearchByNameModal}
+        value={scannedData.name}
+      />
+      <SearchByBarcodeModal
+        visible={searchByBarcodeModalVisible}
+        handler={handleOnPressSearchByBarcodeModal}
+        value={scannedData.barcode}
+      />
     </>
   )
 }
