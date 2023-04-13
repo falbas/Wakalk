@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   StyleSheet,
   Text,
@@ -10,20 +10,82 @@ import {
 } from 'react-native'
 import { Button } from './Button'
 
+import PRODUCTS from '../Products'
+
 export const SearchByNameModal = ({ visible, handler, value }) => {
   const [searchNameValue, setSearchNameValue] = useState(value)
+  const [term, setTerm] = useState('')
+  const [debouncedTerm, setDebouncedTerm] = useState(term)
+  const [searchResult, setSearchResult] = useState([])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTerm(debouncedTerm), 1000)
+    return () => clearTimeout(timer)
+  }, [debouncedTerm])
+
+  useEffect(() => {
+    if (term !== '') {
+      searchProducts(debouncedTerm)
+    }
+  }, [term])
+
+  const searchProducts = (v) => {
+    const filteredBarcode = []
+
+    PRODUCTS.forEach((product) => {
+      if (product.name.toLowerCase().includes(v.toLowerCase())) {
+        filteredBarcode.push({
+          barcode: product.barcode,
+          name: product.name,
+          price: product.price,
+        })
+      }
+    })
+
+    console.log(filteredBarcode)
+    setSearchResult(filteredBarcode)
+  }
+
+  const handleOnChangeSearchName = (v) => {
+    setSearchNameValue(v)
+    setDebouncedTerm(v)
+  }
+
+  const handleSelectedResult = (name) => {
+    setSearchNameValue(name)
+    searchProducts(name)
+    handler(name)
+  }
 
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
         <Text style={styles.textTextInput}>Cari produk berdasarkan nama</Text>
         <TextInput
-          style={styles.addTextInput}
-          onChangeText={(v) => setSearchNameValue(v)}
+          style={styles.searchTextInput}
+          onChangeText={(v) => handleOnChangeSearchName(v)}
           value={searchNameValue}
           autoFocus
         />
-        <Button onPress={() => handler(searchNameValue)}>Close</Button>
+        <ScrollView>
+          {searchResult.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleSelectedResult(item.name)}
+            >
+              <Text>{item.barcode}</Text>
+              <Text>{item.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+      <View style={styles.closeButtonContainer}>
+        <Button
+          style={styles.closeButton}
+          onPress={() => handler(searchNameValue)}
+        >
+          Close
+        </Button>
       </View>
     </Modal>
   )
@@ -33,14 +95,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    margin: 20,
+    marginHorizontal: 20,
+    marginTop: 20,
   },
   textTextInput: {
     fontWeight: 'bold',
     fontSize: 16,
   },
-  addTextInput: {
+  searchTextInput: {
     borderBottomWidth: 1,
     borderBottomColor: '#B4B4B4',
+  },
+  closeButtonContainer: {
+    marginBottom: 20,
+    marginHorizontal: 20,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  closeButton: {
+    margin: 10,
   },
 })
