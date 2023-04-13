@@ -126,24 +126,28 @@ export const Home = () => {
     }
   }
 
-  const handleOnPressSearchByNameModal = (v) => {
+  const handleOnPressSearchByBarcodeModal = (item) => {
     setScannedData((prev) => {
       return {
         ...prev,
-        name: v,
-      }
-    })
-    setSearchByNameModalVisible(!searchByNameModalVisible)
-  }
-
-  const handleOnPressSearchByBarcodeModal = (v) => {
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        barcode: v,
+        barcode: item.barcode,
+        name: item.name,
+        price: item.price,
       }
     })
     setSearchByBarcodeModalVisible(!searchByBarcodeModalVisible)
+  }
+
+  const handleOnPressSearchByNameModal = (item) => {
+    setScannedData((prev) => {
+      return {
+        ...prev,
+        barcode: item.barcode,
+        name: item.name,
+        price: item.price,
+      }
+    })
+    setSearchByNameModalVisible(!searchByNameModalVisible)
   }
 
   return (
@@ -243,15 +247,15 @@ export const Home = () => {
         </ScrollView>
       </View>
 
-      <SearchByNameModal
-        visible={searchByNameModalVisible}
-        handler={handleOnPressSearchByNameModal}
-        value={scannedData.name}
-      />
       <SearchByBarcodeModal
         visible={searchByBarcodeModalVisible}
         handler={handleOnPressSearchByBarcodeModal}
         value={scannedData.barcode}
+      />
+      <SearchByNameModal
+        visible={searchByNameModalVisible}
+        handler={handleOnPressSearchByNameModal}
+        value={scannedData.name}
       />
     </>
   )

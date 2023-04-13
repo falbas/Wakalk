@@ -42,7 +42,6 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
       }
     })
 
-    console.log(filteredBarcode)
     setSearchResult(filteredBarcode)
   }
 
@@ -51,10 +50,10 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
     setDebouncedTerm(v)
   }
 
-  const handleSelectedResult = (name) => {
-    setSearchNameValue(name)
-    searchProducts(name)
-    handler(name)
+  const handleSelectedResult = (item) => {
+    setSearchNameValue(item.name)
+    searchProducts(item.name)
+    handler(item)
   }
 
   return (
@@ -71,7 +70,7 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
           {searchResult.map((item, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleSelectedResult(item.name)}
+              onPress={() => handleSelectedResult(item)}
             >
               <Text>{item.barcode}</Text>
               <Text>{item.name}</Text>
