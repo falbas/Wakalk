@@ -15,26 +15,25 @@ import PRODUCTS from '../Products'
 export const SearchByNameModal = ({ visible, handler, value }) => {
   const [searchNameValue, setSearchNameValue] = useState(value)
   const [term, setTerm] = useState('')
-  const [debouncedTerm, setDebouncedTerm] = useState(term)
   const [searchResult, setSearchResult] = useState([])
 
   useEffect(() => {
-    const timer = setTimeout(() => setTerm(debouncedTerm), 1000)
+    const timer = setTimeout(() => setTerm(searchNameValue), 1000)
     return () => clearTimeout(timer)
-  }, [debouncedTerm])
+  }, [searchNameValue])
 
   useEffect(() => {
     if (term !== '') {
-      searchProducts(debouncedTerm)
+      searchProducts(searchNameValue)
     }
   }, [term])
 
   const searchProducts = (v) => {
-    const filteredBarcode = []
+    const filteredName = []
 
     PRODUCTS.forEach((product) => {
       if (product.name.toLowerCase().includes(v.toLowerCase())) {
-        filteredBarcode.push({
+        filteredName.push({
           barcode: product.barcode,
           name: product.name,
           price: product.price,
@@ -42,18 +41,7 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
       }
     })
 
-    setSearchResult(filteredBarcode)
-  }
-
-  const handleOnChangeSearchName = (v) => {
-    setSearchNameValue(v)
-    setDebouncedTerm(v)
-  }
-
-  const handleSelectedResult = (item) => {
-    setSearchNameValue(item.name)
-    searchProducts(item.name)
-    handler(item)
+    setSearchResult(filteredName)
   }
 
   return (
@@ -62,7 +50,7 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
         <Text style={styles.textTextInput}>Cari produk berdasarkan nama</Text>
         <TextInput
           style={styles.searchTextInput}
-          onChangeText={(v) => handleOnChangeSearchName(v)}
+          onChangeText={(v) => setSearchNameValue(v)}
           value={searchNameValue}
           autoFocus
         />
@@ -70,7 +58,7 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
           {searchResult.map((item, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleSelectedResult(item)}
+              onPress={() => handler(item)}
             >
               <Text>{item.barcode}</Text>
               <Text>{item.name}</Text>
@@ -81,9 +69,9 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
       <View style={styles.closeButtonContainer}>
         <Button
           style={styles.closeButton}
-          onPress={() => handler(searchNameValue)}
+          onPress={() => handler('cancel')}
         >
-          Close
+          Batal
         </Button>
       </View>
     </Modal>

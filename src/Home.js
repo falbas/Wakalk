@@ -32,6 +32,7 @@ export const Home = () => {
     price: 0,
     count: 0,
   })
+  const [count, setCount] = useState(0)
   const [buyedProducts, setBuyedProducts] = useState([])
   const [total, setTotal] = useState(0)
 
@@ -54,13 +55,11 @@ export const Home = () => {
     setScannerIsVisible(false)
 
     const product = PRODUCTS.filter((p) => p.barcode === data)[0]
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        barcode: product.barcode,
-        name: product.name,
-        price: product.price,
-      }
+    setScannedData({
+      barcode: product.barcode,
+      name: product.name,
+      price: product.price,
+      count: 0,
     })
 
     countTextInput.current.focus()
@@ -69,33 +68,6 @@ export const Home = () => {
   const handleOpenScanner = () => {
     setScanned(false)
     setScannerIsVisible(!scannerIsVisible)
-  }
-
-  const handleBarcodeTextInput = (v) => {
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        barcode: v,
-      }
-    })
-  }
-
-  const handleNameTextInput = (v) => {
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        name: v,
-      }
-    })
-  }
-
-  const handleCountTextInput = (v) => {
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        count: v,
-      }
-    })
   }
 
   const handleAddProduct = () => {
@@ -111,14 +83,11 @@ export const Home = () => {
         setBuyedProducts((prev) => [...prev, scannedData])
         setScanned(false)
         setTotal(total + scannedData.price * scannedData.count)
-        setScannedData((prev) => {
-          return {
-            ...prev,
-            barcode: '',
-            name: '',
-            count: 0,
-            price: 0,
-          }
+        setScannedData({
+          barcode: '',
+          name: '',
+          price: 0,
+          count: 0,
         })
       } else {
         alert(`Produk ${scannedData.name} tidak ada di etalase`)
@@ -127,26 +96,32 @@ export const Home = () => {
   }
 
   const handleOnPressSearchByBarcodeModal = (item) => {
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        barcode: item.barcode,
-        name: item.name,
-        price: item.price,
-      }
-    })
+    if (item !== 'cancel') {
+      setScannedData((prev) => {
+        return {
+          ...prev,
+          barcode: item.barcode,
+          name: item.name,
+          price: item.price,
+        }
+      })
+      countTextInput.current.focus()
+    }
     setSearchByBarcodeModalVisible(!searchByBarcodeModalVisible)
   }
 
   const handleOnPressSearchByNameModal = (item) => {
-    setScannedData((prev) => {
-      return {
-        ...prev,
-        barcode: item.barcode,
-        name: item.name,
-        price: item.price,
-      }
-    })
+    if (item !== 'cancel') {
+      setScannedData((prev) => {
+        return {
+          ...prev,
+          barcode: item.barcode,
+          name: item.name,
+          price: item.price,
+        }
+      })
+      countTextInput.current.focus()
+    }
     setSearchByNameModalVisible(!searchByNameModalVisible)
   }
 
@@ -206,7 +181,6 @@ export const Home = () => {
             <TextInput
               style={styles.addTextInput}
               keyboardType="numeric"
-              onChangeText={(v) => handleBarcodeTextInput(v)}
               value={scannedData.barcode}
               onPressIn={() => setSearchByBarcodeModalVisible(true)}
             />
@@ -226,7 +200,6 @@ export const Home = () => {
             <Text style={styles.textTextInput}>Nama Produk</Text>
             <TextInput
               style={styles.addTextInput}
-              onChangeText={(v) => handleNameTextInput(v)}
               value={scannedData.name}
               onPressIn={() => setSearchByNameModalVisible(true)}
             />
@@ -237,8 +210,14 @@ export const Home = () => {
               style={styles.addTextInput}
               keyboardType="numeric"
               ref={countTextInput}
-              onChangeText={(v) => handleCountTextInput(v)}
-              value={scannedData.count === 0 ? '' : scannedData.count}
+              onChangeText={(v) =>
+                setScannedData((prev) => {
+                  return { ...prev, count: v }
+                })
+              }
+              value={
+                scannedData.count === 0 ? '' : scannedData.count.toString()
+              }
             />
           </View>
           <Button style={{ marginTop: 10 }} onPress={handleAddProduct}>
@@ -247,16 +226,20 @@ export const Home = () => {
         </ScrollView>
       </View>
 
-      <SearchByBarcodeModal
-        visible={searchByBarcodeModalVisible}
-        handler={handleOnPressSearchByBarcodeModal}
-        value={scannedData.barcode}
-      />
-      <SearchByNameModal
-        visible={searchByNameModalVisible}
-        handler={handleOnPressSearchByNameModal}
-        value={scannedData.name}
-      />
+      {searchByBarcodeModalVisible && (
+        <SearchByBarcodeModal
+          visible={searchByBarcodeModalVisible}
+          handler={handleOnPressSearchByBarcodeModal}
+          value={scannedData.barcode}
+        />
+      )}
+      {searchByNameModalVisible && (
+        <SearchByNameModal
+          visible={searchByNameModalVisible}
+          handler={handleOnPressSearchByNameModal}
+          value={scannedData.name}
+        />
+      )}
     </>
   )
 }

@@ -15,17 +15,16 @@ import PRODUCTS from '../Products'
 export const SearchByBarcodeModal = ({ visible, handler, value }) => {
   const [searchBarcodeValue, setSearchBarcodeValue] = useState(value)
   const [term, setTerm] = useState('')
-  const [debouncedTerm, setDebouncedTerm] = useState(term)
   const [searchResult, setSearchResult] = useState([])
 
   useEffect(() => {
-    const timer = setTimeout(() => setTerm(debouncedTerm), 1000)
+    const timer = setTimeout(() => setTerm(searchBarcodeValue), 1000)
     return () => clearTimeout(timer)
-  }, [debouncedTerm])
+  }, [searchBarcodeValue])
 
   useEffect(() => {
     if (term !== '') {
-      searchProducts(debouncedTerm)
+      searchProducts(searchBarcodeValue)
     }
   }, [term])
 
@@ -45,17 +44,6 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
     setSearchResult(filteredBarcode)
   }
 
-  const handleOnChangeSearchBarcode = (v) => {
-    setSearchBarcodeValue(v)
-    setDebouncedTerm(v)
-  }
-
-  const handleSelectedResult = (item) => {
-    setSearchBarcodeValue(item.barcode)
-    searchProducts(item.barcode)
-    handler(item)
-  }
-
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
@@ -65,7 +53,7 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
         <TextInput
           style={styles.searchTextInput}
           keyboardType="numeric"
-          onChangeText={(v) => handleOnChangeSearchBarcode(v)}
+          onChangeText={(v) => setSearchBarcodeValue(v)}
           value={searchBarcodeValue}
           autoFocus
         />
@@ -73,7 +61,7 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
           {searchResult.map((item, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleSelectedResult(item)}
+              onPress={() => handler(item)}
             >
               <Text>{item.barcode}</Text>
               <Text>{item.name}</Text>
@@ -84,9 +72,9 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
       <View style={styles.closeButtonContainer}>
         <Button
           style={styles.closeButton}
-          onPress={() => handler(searchBarcodeValue)}
+          onPress={() => handler('cancel')}
         >
-          Close
+          Batal
         </Button>
       </View>
     </Modal>
