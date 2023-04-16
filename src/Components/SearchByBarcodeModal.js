@@ -60,6 +60,7 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
         <ScrollView>
           {searchResult.map((item, index) => (
             <TouchableOpacity
+              style={styles.resultContainer}
               key={index}
               onPress={() => handler(item)}
             >
@@ -70,10 +71,7 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
         </ScrollView>
       </View>
       <View style={styles.closeButtonContainer}>
-        <Button
-          style={styles.closeButton}
-          onPress={() => handler('cancel')}
-        >
+        <Button style={styles.closeButton} onPress={() => handler('cancel')}>
           Batal
         </Button>
       </View>
@@ -93,6 +91,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchTextInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#B4B4B4',
+  },
+  resultContainer: {
+    marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B4B4',
   },
