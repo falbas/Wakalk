@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { StyleSheet, View, Image, Keyboard } from 'react-native'
+import { StyleSheet, View, Image, Keyboard, TouchableOpacity } from 'react-native'
 
-export const Nav = () => {
+export const Nav = ({onSwitch}) => {
   const [keyboardIsVisible, setKeyboardIsVisible] = useState(false)
 
   useEffect(() => {
@@ -17,30 +17,30 @@ export const Nav = () => {
     <>
       {!keyboardIsVisible && (
         <View style={styles.container}>
-          <View style={styles.navIconContainer}>
+          <TouchableOpacity style={styles.navIconContainer} onPress={() => onSwitch('home')}>
             <Image
               style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
             />
-          </View>
-          <View style={styles.navIconContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navIconContainer} onPress={() => onSwitch('productpage')}>
             <Image
               style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
             />
-          </View>
-          <View style={styles.navIconContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navIconContainer}>
             <Image
               style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
             />
-          </View>
-          <View style={styles.navIconContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navIconContainer}>
             <Image
-              style={styles.navIconMain}
+              style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
             />
-          </View>
+          </TouchableOpacity>
         </View>
       )}
     </>
