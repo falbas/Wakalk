@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 import {
   StyleSheet,
@@ -9,8 +10,6 @@ import {
   Modal,
 } from 'react-native'
 import { Button } from './Button'
-
-import PRODUCTS from '../Products'
 
 export const SearchByBarcodeModal = ({ visible, handler, value }) => {
   const [searchBarcodeValue, setSearchBarcodeValue] = useState(value)
@@ -24,24 +23,19 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
 
   useEffect(() => {
     if (term !== '') {
-      searchProducts(searchBarcodeValue)
+      fetchData(searchBarcodeValue)
     }
   }, [term])
 
-  const searchProducts = (v) => {
-    const filteredBarcode = []
-
-    PRODUCTS.forEach((product) => {
-      if (product.barcode.includes(v)) {
-        filteredBarcode.push({
-          barcode: product.barcode,
-          name: product.name,
-          price: product.price,
-        })
-      }
-    })
-
-    setSearchResult(filteredBarcode)
+  const fetchData = async (v) => {
+    try {
+      const { data: response } = await axios.get(
+        `/products?barcode=${v}`
+      )
+      setSearchResult(response.data)
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   return (

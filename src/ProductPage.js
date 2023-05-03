@@ -1,3 +1,5 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -10,6 +12,23 @@ import {
 import PRODUCTS from './Products'
 
 export const ProductPage = () => {
+  const [products, setProducts] = useState()
+
+  const fetchData = async () => {
+    try {
+      const { data: response } = await axios.get(
+        '/products'
+      )
+      setProducts(response.data)
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.resultContainer}>
       <Text>{item.barcode}</Text>
@@ -24,7 +43,7 @@ export const ProductPage = () => {
       </View>
       <SafeAreaView>
         <FlatList
-          data={PRODUCTS}
+          data={products}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />

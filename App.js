@@ -1,8 +1,11 @@
+import axios from 'axios'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Home } from './src/Home'
 import { ProductPage } from './src/ProductPage'
 import { Nav } from './src/Components/Nav'
+
+axios.defaults.baseURL = 'http://192.168.1.5:8000'
 
 export default function App() {
   const [activePage, setActivePage] = useState('home')

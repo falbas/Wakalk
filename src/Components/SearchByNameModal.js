@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 import {
   StyleSheet,
@@ -9,8 +10,6 @@ import {
   Modal,
 } from 'react-native'
 import { Button } from './Button'
-
-import PRODUCTS from '../Products'
 
 export const SearchByNameModal = ({ visible, handler, value }) => {
   const [searchNameValue, setSearchNameValue] = useState(value)
@@ -24,24 +23,19 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
 
   useEffect(() => {
     if (term !== '') {
-      searchProducts(searchNameValue)
+      fetchData(searchNameValue)
     }
   }, [term])
 
-  const searchProducts = (v) => {
-    const filteredName = []
-
-    PRODUCTS.forEach((product) => {
-      if (product.name.toLowerCase().includes(v.toLowerCase())) {
-        filteredName.push({
-          barcode: product.barcode,
-          name: product.name,
-          price: product.price,
-        })
-      }
-    })
-
-    setSearchResult(filteredName)
+  const fetchData = async (v) => {
+    try {
+      const { data: response } = await axios.get(
+        `/products?name=${v}`
+      )
+      setSearchResult(response.data)
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   return (
