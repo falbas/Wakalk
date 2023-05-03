@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState, useEffect, useRef } from 'react'
 import {
   StyleSheet,
@@ -13,8 +14,6 @@ import { SearchByNameModal } from './Components/SearchByNameModal'
 import { SearchByBarcodeModal } from './Components/SearchByBarcodeModal'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 
-import PRODUCTS from './Products'
-
 export const Home = () => {
   const countTextInput = useRef(null)
 
@@ -24,15 +23,16 @@ export const Home = () => {
     useState(false)
   const [searchByBarcodeModalVisible, setSearchByBarcodeModalVisible] =
     useState(false)
-
   const [scanned, setScanned] = useState(false)
+
   const [scannedData, setScannedData] = useState({
     barcode: '',
     name: '',
     price: 0,
     count: 0,
   })
-  const [count, setCount] = useState(0)
+  const [searchResult, setSearchResult] = useState()
+
   const [buyedProducts, setBuyedProducts] = useState([])
   const [total, setTotal] = useState(0)
 
@@ -45,22 +45,29 @@ export const Home = () => {
     getBarCodeScannerPermissions()
   }, [])
 
-  const handleResetButton = () => {
-    setBuyedProducts([])
-    setTotal(0)
-  }
-
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true)
     setScannerIsVisible(false)
 
-    const product = PRODUCTS.filter((p) => p.barcode === data)[0]
-    setScannedData({
-      barcode: product.barcode,
-      name: product.name,
-      price: product.price,
-      count: 0,
-    })
+    const fetchData = async (v) => {
+      try {
+        const { data: response } = await axios.get(`/products?barcode=${v}`)
+        const product = response.data[0]
+        if (product !== undefined) {
+          setScannedData({
+            barcode: product.barcode,
+            name: product.name,
+            price: product.price,
+            count: 0,
+          })
+        } else {
+          alert(`Produk dengan barcode ${data} tidak ada di etalase`)
+        }
+      } catch (error) {
+        console.error(error.message)
+      }
+    }
+    fetchData(data)
 
     countTextInput.current.focus()
   }
@@ -68,6 +75,17 @@ export const Home = () => {
   const handleOpenScanner = () => {
     setScanned(false)
     setScannerIsVisible(!scannerIsVisible)
+    setScannedData({
+      barcode: '',
+      name: '',
+      price: 0,
+      count: 0,
+    })
+  }
+
+  const handleResetButton = () => {
+    setBuyedProducts([])
+    setTotal(0)
   }
 
   const handleAddProduct = () => {
@@ -76,22 +94,15 @@ export const Home = () => {
       scannedData.name !== '' &&
       scannedData.count !== 0
     ) {
-      const product = PRODUCTS.filter(
-        (p) => p.barcode === scannedData.barcode
-      )[0]
-      if (product !== undefined) {
-        setBuyedProducts((prev) => [...prev, scannedData])
-        setScanned(false)
-        setTotal(total + scannedData.price * scannedData.count)
-        setScannedData({
-          barcode: '',
-          name: '',
-          price: 0,
-          count: 0,
-        })
-      } else {
-        alert(`Produk ${scannedData.name} tidak ada di etalase`)
-      }
+      setBuyedProducts((prev) => [...prev, scannedData])
+      setScanned(false)
+      setTotal(total + scannedData.price * scannedData.count)
+      setScannedData({
+        barcode: '',
+        name: '',
+        price: 0,
+        count: 0,
+      })
     }
   }
 

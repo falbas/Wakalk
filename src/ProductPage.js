@@ -9,8 +9,6 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import PRODUCTS from './Products'
-
 export const ProductPage = () => {
   const [products, setProducts] = useState()
 
