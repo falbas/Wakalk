@@ -41,7 +41,10 @@ export const Nav = ({ onSwitch }) => {
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navIconContainer}>
+          <TouchableOpacity
+            style={styles.navIconContainer}
+            onPress={() => onSwitch('transactionhistorypage')}
+          >
             <Image
               style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}

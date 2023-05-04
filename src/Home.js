@@ -135,6 +135,21 @@ export const Home = () => {
     setSearchByNameModalVisible(!searchByNameModalVisible)
   }
 
+  const handleSaveTransaction = async () => {
+    try {
+      const response = await axios.post('/transactions', {
+        total: total,
+        products: buyedProducts,
+      })
+      if (response.status === 200) {
+        setTotal(0)
+        setBuyedProducts([])
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
   return (
     <>
       {!scannerIsVisible && (
@@ -149,7 +164,7 @@ export const Home = () => {
               >
                 Reset
               </Button>
-              <Button>Simpan</Button>
+              <Button onPress={handleSaveTransaction}>Simpan</Button>
             </View>
           </View>
           <View style={styles.totalContainer}>
