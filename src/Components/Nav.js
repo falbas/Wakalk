@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react'
-import { StyleSheet, View, Image, Keyboard, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Image,
+  Keyboard,
+  TouchableOpacity,
+} from 'react-native'
 
-export const Nav = ({onSwitch}) => {
+export const Nav = ({ onSwitch }) => {
   const [keyboardIsVisible, setKeyboardIsVisible] = useState(false)
 
   useEffect(() => {
@@ -17,13 +23,19 @@ export const Nav = ({onSwitch}) => {
     <>
       {!keyboardIsVisible && (
         <View style={styles.container}>
-          <TouchableOpacity style={styles.navIconContainer} onPress={() => onSwitch('home')}>
+          <TouchableOpacity
+            style={styles.navIconContainer}
+            onPress={() => onSwitch('home')}
+          >
             <Image
               style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navIconContainer} onPress={() => onSwitch('productpage')}>
+          <TouchableOpacity
+            style={styles.navIconContainer}
+            onPress={() => onSwitch('productpage')}
+          >
             <Image
               style={styles.navIcon}
               source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
@@ -51,6 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },

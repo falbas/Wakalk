@@ -31,7 +31,6 @@ export const Home = () => {
     price: 0,
     count: 0,
   })
-  const [searchResult, setSearchResult] = useState()
 
   const [buyedProducts, setBuyedProducts] = useState([])
   const [total, setTotal] = useState(0)
@@ -258,11 +257,10 @@ export const Home = () => {
 const styles = StyleSheet.create({
   topContainer: {
     flex: 0.6,
-    paddingTop: 50,
-    paddingHorizontal: 50,
   },
   productListContainer: {
     marginVertical: 20,
+    paddingHorizontal: 50,
   },
   scannerContainer: {
     flex: 0.6,
@@ -279,6 +277,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 50,
   },
   titleText: {
     fontSize: 24,
@@ -288,6 +287,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 1,
     borderColor: '#000',
+    marginHorizontal: 50,
   },
   totalText: {
     textAlign: 'center',
