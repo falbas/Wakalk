@@ -13,20 +13,18 @@ export const SaveTransactionModal = ({
   const [customer, setCustomer] = useState('')
 
   const handleSaveTransaction = async (status) => {
-    if (status === 'unpaid' && customer !== '') {
-      try {
-        const response = await axios.post('/transactions', {
-          status: status,
-          customer: customer,
-          total: total,
-          products: buyedProducts,
-        })
-        if (response.status === 200) {
-          handle()
-        }
-      } catch (error) {
-        console.error(error.message)
+    try {
+      const response = await axios.post('/transactions', {
+        status: status,
+        customer: customer,
+        total: total,
+        products: buyedProducts,
+      })
+      if (response.status === 200) {
+        handle()
       }
+    } catch (error) {
+      console.error(error.message)
     }
   }
 

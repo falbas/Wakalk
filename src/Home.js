@@ -27,6 +27,7 @@ export const Home = () => {
   const [scanned, setScanned] = useState(false)
   const [saveTransactionModalVisible, setSaveTransactionModalVisible] =
     useState(false)
+  const [alreadyInBuyedProduct, setAlreadyInBuyedProduct] = useState(false)
 
   const [scannedData, setScannedData] = useState({
     barcode: '',
@@ -96,15 +97,38 @@ export const Home = () => {
       scannedData.name !== '' &&
       scannedData.count !== 0
     ) {
-      setBuyedProducts((prev) => [...prev, scannedData])
+      if (!alreadyInBuyedProduct) {
+        setBuyedProducts((prev) => [...prev, scannedData])
+        setTotal(total + scannedData.price * scannedData.count)
+      } else {
+        let updatedTotal = 0
+        const updatedBuyedProduct = buyedProducts.map((item) => {
+          const { price, count } =
+            item.barcode === scannedData.barcode ? scannedData : item
+          updatedTotal += price * count
+          return { ...item, price, count }
+        })
+        setBuyedProducts(updatedBuyedProduct)
+        setTotal(updatedTotal)
+      }
       setScanned(false)
-      setTotal(total + scannedData.price * scannedData.count)
       setScannedData({
         barcode: '',
         name: '',
         price: 0,
         count: 0,
       })
+    }
+  }
+
+  const handleDuplucateBuyedProduct = (item) => {
+    const product = buyedProducts.filter((p) => p.barcode === item.barcode)[0]
+
+    if (product !== undefined) {
+      setScannedData(product)
+      setAlreadyInBuyedProduct(true)
+    } else {
+      setAlreadyInBuyedProduct(false)
     }
   }
 
@@ -119,6 +143,7 @@ export const Home = () => {
         }
       })
       countTextInput.current.focus()
+      handleDuplucateBuyedProduct(item)
     }
     setSearchByBarcodeModalVisible(!searchByBarcodeModalVisible)
   }
@@ -133,6 +158,7 @@ export const Home = () => {
           price: item.price,
         }
       })
+      handleDuplucateBuyedProduct(item)
       countTextInput.current.focus()
     }
     setSearchByNameModalVisible(!searchByNameModalVisible)
@@ -258,8 +284,13 @@ export const Home = () => {
             onPress={handleAddProduct}
             disabled={scannedData.count === 0}
           >
-            Tambah
+            {alreadyInBuyedProduct === true ? 'Ubah' : 'Tambah'}
           </Button>
+          {alreadyInBuyedProduct && (
+            <Text style={{ color: '#FF0000' }}>
+              *Produk sudah ada di keranjang
+            </Text>
+          )}
         </ScrollView>
       </View>
 
