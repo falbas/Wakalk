@@ -12,6 +12,7 @@ import {
 import { Button } from './Components/Button'
 import { SearchByNameModal } from './Components/SearchByNameModal'
 import { SearchByBarcodeModal } from './Components/SearchByBarcodeModal'
+import { SaveTransactionModal } from './Components/SaveTransactionModal'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 
 export const Home = () => {
@@ -24,6 +25,8 @@ export const Home = () => {
   const [searchByBarcodeModalVisible, setSearchByBarcodeModalVisible] =
     useState(false)
   const [scanned, setScanned] = useState(false)
+  const [saveTransactionModalVisible, setSaveTransactionModalVisible] =
+    useState(false)
 
   const [scannedData, setScannedData] = useState({
     barcode: '',
@@ -135,19 +138,12 @@ export const Home = () => {
     setSearchByNameModalVisible(!searchByNameModalVisible)
   }
 
-  const handleSaveTransaction = async () => {
-    try {
-      const response = await axios.post('/transactions', {
-        total: total,
-        products: buyedProducts,
-      })
-      if (response.status === 200) {
-        setTotal(0)
-        setBuyedProducts([])
-      }
-    } catch (error) {
-      console.error(error.message)
+  const handleSaveTransactionModal = (con) => {
+    if (con !== 'cancel') {
+      setTotal(0)
+      setBuyedProducts([])
     }
+    setSaveTransactionModalVisible(!saveTransactionModalVisible)
   }
 
   return (
@@ -158,13 +154,19 @@ export const Home = () => {
             <Text style={styles.titleText}>Wakalk</Text>
             <View style={{ flexDirection: 'row' }}>
               <Button
-                style={styles.resetButton}
-                textStyle={{ color: '#FF0000' }}
+                style={[styles.resetButton, total === 0 && { opacity: 0.75 }]}
                 onPress={handleResetButton}
+                disabled={total === 0}
               >
                 Reset
               </Button>
-              <Button onPress={handleSaveTransaction}>Simpan</Button>
+              <Button
+                style={total === 0 && { opacity: 0.75 }}
+                onPress={() => setSaveTransactionModalVisible(true)}
+                disabled={total === 0}
+              >
+                Simpan
+              </Button>
             </View>
           </View>
           <View style={styles.totalContainer}>
@@ -208,6 +210,7 @@ export const Home = () => {
               keyboardType="numeric"
               value={scannedData.barcode}
               onPressIn={() => setSearchByBarcodeModalVisible(true)}
+              placeholder="Barcode Produk *"
             />
             <View style={styles.iconScanContainer}>
               <TouchableOpacity
@@ -227,6 +230,7 @@ export const Home = () => {
               style={styles.addTextInput}
               value={scannedData.name}
               onPressIn={() => setSearchByNameModalVisible(true)}
+              placeholder="Nama Produk *"
             />
           </View>
           <View>
@@ -243,9 +247,17 @@ export const Home = () => {
               value={
                 scannedData.count === 0 ? '' : scannedData.count.toString()
               }
+              placeholder="Jumlah *"
             />
           </View>
-          <Button style={{ marginTop: 10 }} onPress={handleAddProduct}>
+          <Button
+            style={[
+              { marginTop: 10 },
+              scannedData.count === 0 && { opacity: 0.75 },
+            ]}
+            onPress={handleAddProduct}
+            disabled={scannedData.count === 0}
+          >
             Tambah
           </Button>
         </ScrollView>
@@ -263,6 +275,14 @@ export const Home = () => {
           visible={searchByNameModalVisible}
           handler={handleOnPressSearchByNameModal}
           value={scannedData.name}
+        />
+      )}
+      {saveTransactionModalVisible && (
+        <SaveTransactionModal
+          visible={saveTransactionModalVisible}
+          handle={handleSaveTransactionModal}
+          total={total}
+          buyedProducts={buyedProducts}
         />
       )}
     </>
@@ -316,9 +336,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   resetButton: {
-    backgroundColor: 'rgba(0,0,0,0)',
-    borderWidth: 1,
-    borderColor: '#FF0000',
+    backgroundColor: '#FF0000',
     marginRight: 10,
   },
   textTextInput: {

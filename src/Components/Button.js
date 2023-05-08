@@ -1,8 +1,8 @@
 import { StyleSheet, TouchableOpacity, Text } from 'react-native'
 
-export const Button = ({ children, style, textStyle, onPress }) => {
+export const Button = ({ children, style, textStyle, onPress, disabled }) => {
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress} disabled={disabled}>
       <Text style={[styles.text, textStyle]}>{children}</Text>
     </TouchableOpacity>
   )
