@@ -7,6 +7,7 @@ import { Nav } from './src/Components/Nav'
 import { Home } from './src/Home'
 import { ProductPage } from './src/ProductPage'
 import { TransactionHistoryPage } from './src/TransactionHistoryPage'
+import { BillBookPage } from './src/BillBookPage'
 
 axios.defaults.baseURL = Constants.expoConfig.extra.apiUrl
 
@@ -23,6 +24,7 @@ export default function App() {
         {activePage === 'home' && <Home />}
         {activePage === 'productpage' && <ProductPage />}
         {activePage === 'transactionhistorypage' && <TransactionHistoryPage />}
+        {activePage === 'billbookpage' && <BillBookPage />}
       </View>
       <Nav onSwitch={switchPage} />
     </>

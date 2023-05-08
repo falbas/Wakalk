@@ -1,10 +1,7 @@
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native'
 import { Button } from './Components/Button'
 
-export const DetailTransactionPage = ({
-  selectedTransaction,
-  handleOpenDetailTransactionPage,
-}) => {
+export const DetailBillPage = ({ selectedBill, handleOpenDetailBillPage }) => {
   const renderItem = ({ item }) => (
     <View style={styles.productItem}>
       <Text style={{ flex: 0.5 }}>{item.name}</Text>
@@ -19,32 +16,31 @@ export const DetailTransactionPage = ({
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Detail Transaksi</Text>
+        <Text style={styles.titleText}>Detail Utang</Text>
         <View style={{ flexDirection: 'row' }}>
-          <Button onPress={() => handleOpenDetailTransactionPage({})}>
-            Kembali
-          </Button>
+          <Button onPress={() => handleOpenDetailBillPage({})}>Kembali</Button>
         </View>
       </View>
       <View style={styles.dateContainer}>
         <Text>
-          {new Date(selectedTransaction.createdAt).toLocaleString('id-ID', {
+          {new Date(selectedBill.createdAt).toLocaleString('id-ID', {
             weekday: 'long',
             hour12: false,
           })}
         </Text>
+        <Text>{selectedBill.customer}</Text>
       </View>
       <SafeAreaView>
         <FlatList
           style={styles.productListContainer}
-          data={selectedTransaction.products}
+          data={selectedBill.products}
           renderItem={renderItem}
           keyExtractor={(item) => item.barcode}
         />
       </SafeAreaView>
       <View style={styles.totalContainer}>
         <Text>Total</Text>
-        <Text>Rp{selectedTransaction.total}</Text>
+        <Text>Rp{selectedBill.total}</Text>
       </View>
     </View>
   )
