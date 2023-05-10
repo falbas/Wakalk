@@ -14,6 +14,7 @@ import { SearchByNameModal } from './Components/SearchByNameModal'
 import { SearchByBarcodeModal } from './Components/SearchByBarcodeModal'
 import { SaveTransactionModal } from './Components/SaveTransactionModal'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import Checkbox from 'expo-checkbox'
 
 export const Home = () => {
   const countTextInput = useRef(null)
@@ -38,6 +39,7 @@ export const Home = () => {
 
   const [buyedProducts, setBuyedProducts] = useState([])
   const [total, setTotal] = useState(0)
+  const [buyedProductChecked, setBuyedProductChecked] = useState([])
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -86,9 +88,21 @@ export const Home = () => {
     })
   }
 
-  const handleResetButton = () => {
-    setBuyedProducts([])
-    setTotal(0)
+  const handleDeleteButton = () => {
+    const updatedBuyedProduct = []
+    let updatedTotal = 0
+    const updatedBuyedProductChecked = []
+    buyedProducts.forEach((product, index) => {
+      if (!buyedProductChecked[index]) {
+        updatedBuyedProduct.push(product)
+        updatedTotal += product.price * product.count
+        updatedBuyedProductChecked.push(false)
+      }
+    })
+
+    setBuyedProducts(updatedBuyedProduct)
+    setTotal(updatedTotal)
+    setBuyedProductChecked(updatedBuyedProductChecked)
   }
 
   const handleAddProduct = () => {
@@ -100,6 +114,7 @@ export const Home = () => {
       if (!alreadyInBuyedProduct) {
         setBuyedProducts((prev) => [...prev, scannedData])
         setTotal(total + scannedData.price * scannedData.count)
+        setBuyedProductChecked((prev) => [...prev, false])
       } else {
         let updatedTotal = 0
         const updatedBuyedProduct = buyedProducts.map((item) => {
@@ -119,6 +134,18 @@ export const Home = () => {
         count: 0,
       })
     }
+  }
+
+  const handleEditBuyedProduct = (item) => {
+    setScannedData(item)
+    setAlreadyInBuyedProduct(true)
+  }
+
+  const handleBuyedProductChecked = (index) => {
+    const updatedBuyedProductChecked = buyedProductChecked.map((item, i) =>
+      i === index ? !buyedProductChecked[i] : buyedProductChecked[i]
+    )
+    setBuyedProductChecked(updatedBuyedProductChecked)
   }
 
   const handleDuplucateBuyedProduct = (item) => {
@@ -180,11 +207,18 @@ export const Home = () => {
             <Text style={styles.titleText}>Wakalk</Text>
             <View style={{ flexDirection: 'row' }}>
               <Button
-                style={[styles.resetButton, total === 0 && { opacity: 0.75 }]}
-                onPress={handleResetButton}
-                disabled={total === 0}
+                style={[
+                  styles.resetButton,
+                  (!buyedProductChecked.includes(true) ||
+                    buyedProductChecked.length === 0) && { opacity: 0.75 },
+                ]}
+                onPress={handleDeleteButton}
+                disabled={
+                  !buyedProductChecked.includes(true) ||
+                  buyedProductChecked.length === 0
+                }
               >
-                Reset
+                Hapus
               </Button>
               <Button
                 style={total === 0 && { opacity: 0.75 }}
@@ -201,7 +235,16 @@ export const Home = () => {
           </View>
           <ScrollView style={styles.productListContainer}>
             {buyedProducts.map((item, index) => (
-              <View style={styles.productItemContainer} key={index}>
+              <TouchableOpacity
+                style={styles.productItemContainer}
+                key={index}
+                onPress={() => handleEditBuyedProduct(item)}
+              >
+                <Checkbox
+                  style={styles.checkbox}
+                  value={buyedProductChecked[index]}
+                  onValueChange={() => handleBuyedProductChecked(index)}
+                />
                 <Text style={{ flex: 0.5 }}>{item.name}</Text>
                 <Text style={{ flex: 0.1, textAlign: 'right' }}>
                   {item.count}
@@ -212,7 +255,7 @@ export const Home = () => {
                 <Text style={{ flex: 0.2, textAlign: 'right' }}>
                   {item.count * item.price}
                 </Text>
-              </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -365,6 +408,11 @@ const styles = StyleSheet.create({
   },
   productItemContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    marginVertical: 3,
+    marginEnd: 3,
   },
   resetButton: {
     backgroundColor: '#FF0000',
