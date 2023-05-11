@@ -44,10 +44,10 @@ export const DetailTransactionPage = ({ transactionId, handle }) => {
       <>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>Detail Transaksi</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Button onPress={() => handle({})}>Kembali</Button>
+              <Button onPress={() => handle({})}>{'<'}</Button>
             </View>
+            <Text style={styles.titleText}>Detail Transaksi</Text>
           </View>
           <View style={styles.dateContainer}>
             <Text>
@@ -101,33 +101,34 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   titleContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 50,
-    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    gap: 5,
   },
   titleText: {
     fontSize: 24,
     fontWeight: 'bold',
   },
   dateContainer: {
-    marginHorizontal: 50,
+    marginHorizontal: 20,
     marginTop: 20,
   },
   productListContainer: {
     marginTop: 20,
-    marginHorizontal: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: '#B4B4B4',
+    paddingHorizontal: 20,
   },
   productItem: {
     flexDirection: 'row',
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#B4B4B4',
   },
   totalContainer: {
-    marginHorizontal: 50,
+    marginHorizontal: 20,
     marginTop: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',

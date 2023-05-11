@@ -66,7 +66,7 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
       </View>
       <View style={styles.closeButtonContainer}>
         <Button style={styles.closeButton} onPress={() => handler('cancel')}>
-          Batal
+          Kembali
         </Button>
       </View>
     </Modal>

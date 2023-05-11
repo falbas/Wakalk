@@ -67,7 +67,7 @@ export const BillBookPage = () => {
               />
             </SafeAreaView>
           ) : (
-            <View style={{ padding: 50 }}>
+            <View style={{ padding: 20 }}>
               <Text>Tidak ada utang</Text>
             </View>
           )}
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     justifyContent: 'space-between',
   },
   titleText: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   productListContainer: {
     marginTop: 20,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
   },
   productItem: {
     marginTop: 5,

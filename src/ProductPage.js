@@ -80,6 +80,11 @@ export const ProductPage = () => {
     fetchData()
   }, [])
 
+  const handleOpenAddProdunctPage = () => {
+    setOpenAddProductPage(!openAddProductPage)
+    setScannerIsVisible(false)
+  }
+
   const handleInputProduct = (field, value) => {
     setInputProduct((prev) => {
       return {
@@ -169,7 +174,7 @@ export const ProductPage = () => {
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Tambah Produk</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Button onPress={() => setOpenAddProductPage(false)}>X</Button>
+              <Button onPress={handleOpenAddProdunctPage}>X</Button>
             </View>
           </View>
           <ScrollView style={styles.productListContainer}>
@@ -249,12 +254,11 @@ const styles = StyleSheet.create({
   },
   scannerContainer: {
     flex: 0.6,
-    paddingHorizontal: 50,
     backgroundColor: '#000000',
   },
   titleContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     justifyContent: 'space-between',
   },
   titleText: {
@@ -263,7 +267,7 @@ const styles = StyleSheet.create({
   },
   productListContainer: {
     marginTop: 20,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
   },
   productItem: {
     marginTop: 5,

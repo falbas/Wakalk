@@ -369,24 +369,22 @@ const styles = StyleSheet.create({
   },
   productListContainer: {
     marginVertical: 20,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
   },
   scannerContainer: {
     flex: 0.6,
-    paddingTop: 50,
-    paddingHorizontal: 50,
     backgroundColor: '#000000',
   },
   bottomContainer: {
     flex: 0.4,
     backgroundColor: '#E6E6E6',
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     paddingTop: 20,
   },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
   },
   titleText: {
     fontSize: 24,
@@ -396,7 +394,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 1,
     borderColor: '#000',
-    marginHorizontal: 50,
+    marginHorizontal: 20,
   },
   totalText: {
     textAlign: 'center',
