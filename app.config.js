@@ -18,6 +18,8 @@ module.exports = {
       supportsTablet: true,
     },
     android: {
+      package: 'com.falbas.wakalk',
+      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#ffffff',
@@ -35,6 +37,9 @@ module.exports = {
       ],
     ],
     extra: {
+      eas: {
+        projectId: '75d3f2b8-1284-47d7-a24b-d5163e1f843a',
+      },
       apiUrl: process.env.BACKEND_URL,
     },
   },
