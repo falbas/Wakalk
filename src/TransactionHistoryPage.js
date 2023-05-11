@@ -12,7 +12,7 @@ import {
 import { DetailTransactionPage } from './DetailTransactionPage'
 
 export const TransactionHistoryPage = () => {
-  const [transactions, setTransaction] = useState()
+  const [transactions, setTransaction] = useState([])
   const [openDetailTransactionPage, setOpenDetailTransactionPage] =
     useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState({})
@@ -57,21 +57,27 @@ export const TransactionHistoryPage = () => {
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Riwayat Transaksi</Text>
           </View>
-          <SafeAreaView style={{ paddingBottom: 50 }}>
-            <FlatList
-              style={styles.productListContainer}
-              data={transactions}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-            />
-          </SafeAreaView>
+          {transactions.length > 0 ? (
+            <SafeAreaView style={{ paddingBottom: 50 }}>
+              <FlatList
+                style={styles.productListContainer}
+                data={transactions}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+              />
+            </SafeAreaView>
+          ) : (
+            <View style={{ margin: 50 }}>
+              <Text>Transaksi Kosong</Text>
+            </View>
+          )}
         </View>
       )}
 
       {openDetailTransactionPage && (
         <DetailTransactionPage
-          selectedTransaction={selectedTransaction}
-          handleOpenDetailTransactionPage={handleOpenDetailTransactionPage}
+          transactionId={selectedTransaction.id}
+          handle={handleOpenDetailTransactionPage}
         />
       )}
     </>

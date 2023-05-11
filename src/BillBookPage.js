@@ -9,18 +9,17 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import { DetailBillPage } from './DetailBillPage'
+import { DetailTransactionPage } from './DetailTransactionPage'
 
 export const BillBookPage = () => {
-  const [bills, setBill] = useState()
-  const [openDetailBillPage, setOpenDetailBillPage] =
-    useState(false)
-  const [selectedBill, setSelectedBill] = useState({})
+  const [transactions, setTransactions] = useState([])
+  const [openDetailBillPage, setOpenDetailBillPage] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState({})
 
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get('/transactions?status=unpaid')
-      setBill(response.data)
+      setTransactions(response.data)
     } catch (error) {
       console.error(error.message)
     }
@@ -28,11 +27,11 @@ export const BillBookPage = () => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [openDetailBillPage])
 
   const handleOpenDetailBillPage = (item) => {
     setOpenDetailBillPage(!openDetailBillPage)
-    setSelectedBill(item)
+    setSelectedTransaction(item)
   }
 
   const renderItem = ({ item }) => (
@@ -58,21 +57,27 @@ export const BillBookPage = () => {
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Buku Utang</Text>
           </View>
-          <SafeAreaView style={{ paddingBottom: 50 }}>
-            <FlatList
-              style={styles.productListContainer}
-              data={bills}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-            />
-          </SafeAreaView>
+          {transactions.length > 0 ? (
+            <SafeAreaView style={{ paddingBottom: 50 }}>
+              <FlatList
+                style={styles.productListContainer}
+                data={transactions}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+              />
+            </SafeAreaView>
+          ) : (
+            <View style={{ padding: 50 }}>
+              <Text>Tidak ada utang</Text>
+            </View>
+          )}
         </View>
       )}
 
       {openDetailBillPage && (
-        <DetailBillPage
-          selectedBill={selectedBill}
-          handleOpenDetailBillPage={handleOpenDetailBillPage}
+        <DetailTransactionPage
+          transactionId={selectedTransaction.id}
+          handle={handleOpenDetailBillPage}
         />
       )}
     </>
