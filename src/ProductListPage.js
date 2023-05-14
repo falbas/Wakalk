@@ -14,8 +14,9 @@ import {
 } from 'react-native'
 import { Button } from './Components/Button'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import { DetailProductPage } from './DetailProductPage'
 
-export const ProductPage = () => {
+export const ProductListPage = () => {
   const [hasPermission, setHasPermission] = useState(null)
   const [scannerIsVisible, setScannerIsVisible] = useState(false)
   const [scanned, setScanned] = useState(false)
@@ -23,6 +24,8 @@ export const ProductPage = () => {
 
   const [products, setProducts] = useState()
   const [openAddProductPage, setOpenAddProductPage] = useState(false)
+  const [openDetailProductPage, setOpenDetailProductPage] = useState(false)
+  const [selectedProductId, setSelectedProductId] = useState(false)
 
   const [inputProduct, setInputProduct] = useState({
     barcode: '',
@@ -120,16 +123,33 @@ export const ProductPage = () => {
     }
   }
 
+  const handleDetailProductPage = (itemId) => {
+    setOpenDetailProductPage(!openDetailProductPage)
+    setOpenAddProductPage(false)
+    setScannerIsVisible(false)
+    setSelectedProductId(itemId)
+    fetchData()
+  }
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.productItem}>
-      <Text>{item.barcode}</Text>
-      <Text>{item.name}</Text>
+    <TouchableOpacity
+      style={styles.productItem}
+      onPress={() => handleDetailProductPage(item.id)}
+    >
+      <View>
+        <Text>{item.name}</Text>
+        <Text>{item.barcode}</Text>
+      </View>
+      <View style={{ alignItems: 'flex-end' }}>
+        <Text>Rp{item.price}</Text>
+        <Text>{item.stock}</Text>
+      </View>
     </TouchableOpacity>
   )
 
   return (
     <>
-      {!scannerIsVisible && (
+      {!scannerIsVisible && !openDetailProductPage && (
         <View
           style={[
             styles.topContainer,
@@ -239,6 +259,13 @@ export const ProductPage = () => {
           </ScrollView>
         </View>
       )}
+
+      {openDetailProductPage && (
+        <DetailProductPage
+          productId={selectedProductId}
+          handler={handleDetailProductPage}
+        />
+      )}
     </>
   )
 }
@@ -270,6 +297,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   productItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B4B4',

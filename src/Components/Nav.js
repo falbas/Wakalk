@@ -34,7 +34,7 @@ export const Nav = ({ onSwitch }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navIconContainer}
-            onPress={() => onSwitch('productpage')}
+            onPress={() => onSwitch('productlistpage')}
           >
             <Image
               style={styles.navIcon}

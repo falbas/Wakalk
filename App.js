@@ -5,7 +5,7 @@ import Constants from 'expo-constants'
 
 import { Nav } from './src/Components/Nav'
 import { Home } from './src/Home'
-import { ProductPage } from './src/ProductPage'
+import { ProductListPage } from './src/ProductListPage'
 import { TransactionHistoryPage } from './src/TransactionHistoryPage'
 import { BillBookPage } from './src/BillBookPage'
 
@@ -22,7 +22,7 @@ export default function App() {
     <>
       <View style={styles.container}>
         {activePage === 'home' && <Home />}
-        {activePage === 'productpage' && <ProductPage />}
+        {activePage === 'productlistpage' && <ProductListPage />}
         {activePage === 'transactionhistorypage' && <TransactionHistoryPage />}
         {activePage === 'billbookpage' && <BillBookPage />}
       </View>
