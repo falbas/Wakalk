@@ -153,7 +153,7 @@ export const ProductListPage = () => {
         <View
           style={[
             styles.topContainer,
-            openAddProductPage && { flex: 0.6 },
+            openAddProductPage && { flex: 0.5 },
             keyboardIsVisible && { flex: 0.1 },
           ]}
         >
@@ -275,12 +275,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
-    flex: 0.4,
+    flex: 0.5,
     paddingTop: 20,
     backgroundColor: '#E6E6E6',
   },
   scannerContainer: {
-    flex: 0.6,
+    flex: 0.5,
     backgroundColor: '#000000',
   },
   titleContainer: {

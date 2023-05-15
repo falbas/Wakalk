@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native'
 import { Button } from '../Components/Button'
-import { BillPaymentModal } from '../Modules/BillPaymentModal'
+import { ConfirmModal } from '../Components/ConfirmModal'
 
 export const DetailTransactionPage = ({ transactionId, handle }) => {
   const [billPaymentModalVisible, setBillPaymentModalVisible] = useState(false)
@@ -23,9 +23,20 @@ export const DetailTransactionPage = ({ transactionId, handle }) => {
     fetchData()
   }, [])
 
-  const handleOpenBillPaymentModal = () => {
-    setBillPaymentModalVisible(false)
-    fetchData()
+  const handleBillPayment = async () => {
+    try {
+      const response = await axios.put(`/transactions/${transactionId}`, {
+        status: 'paid',
+        customer: transaction.customer,
+        total: transaction.total,
+        products: transaction.products,
+      })
+      if (response.status === 200) {
+        fetchData()
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   const renderItem = ({ item }) => (
@@ -84,10 +95,14 @@ export const DetailTransactionPage = ({ transactionId, handle }) => {
                 Sudah Dibayar
               </Button>
             </View>
-            <BillPaymentModal
+            <ConfirmModal
               visible={billPaymentModalVisible}
-              handle={handleOpenBillPaymentModal}
-              transaction={transaction}
+              title={'Konfirmasi Pembayaran'}
+              body={'Transaksi sudah dibayar dan hapus dari daftar utang?'}
+              yesText={'Simpan'}
+              yesHandler={handleBillPayment}
+              noText={'Batal'}
+              noHandler={() => setBillPaymentModalVisible(false)}
             />
           </>
         )}
