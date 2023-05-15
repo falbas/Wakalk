@@ -9,28 +9,28 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native'
-import { Button } from './Button'
+import { Button } from '../Components/Button'
 
-export const SearchByNameModal = ({ visible, handler, value }) => {
-  const [searchNameValue, setSearchNameValue] = useState(value)
+export const SearchByBarcodeModal = ({ visible, handler, value }) => {
+  const [searchBarcodeValue, setSearchBarcodeValue] = useState(value)
   const [term, setTerm] = useState('')
   const [searchResult, setSearchResult] = useState([])
 
   useEffect(() => {
-    const timer = setTimeout(() => setTerm(searchNameValue), 1000)
+    const timer = setTimeout(() => setTerm(searchBarcodeValue), 1000)
     return () => clearTimeout(timer)
-  }, [searchNameValue])
+  }, [searchBarcodeValue])
 
   useEffect(() => {
     if (term !== '') {
-      fetchData(searchNameValue)
+      fetchData(searchBarcodeValue)
     }
   }, [term])
 
   const fetchData = async (v) => {
     try {
       const { data: response } = await axios.get(
-        `/products?name=${v}`
+        `/products?barcode=${v}`
       )
       setSearchResult(response.data)
     } catch (error) {
@@ -41,11 +41,14 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
-        <Text style={styles.textTextInput}>Cari produk berdasarkan nama</Text>
+        <Text style={styles.textTextInput}>
+          Cari produk berdasarkan barcode
+        </Text>
         <TextInput
           style={styles.searchTextInput}
-          onChangeText={(v) => setSearchNameValue(v)}
-          value={searchNameValue}
+          keyboardType="numeric"
+          onChangeText={(v) => setSearchBarcodeValue(v)}
+          value={searchBarcodeValue}
           autoFocus
         />
         <ScrollView>

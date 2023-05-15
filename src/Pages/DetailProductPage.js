@@ -12,9 +12,9 @@ import {
   Image,
   Keyboard,
 } from 'react-native'
-import { Button } from './Components/Button'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import { ConfirmModal } from './Components/ConfirmModal'
+import { Button } from '../Components/Button'
+import { ConfirmModal } from '../Components/ConfirmModal'
 
 export const DetailProductPage = ({ productId, handler }) => {
   const [hasPermission, setHasPermission] = useState(null)

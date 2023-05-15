@@ -4,10 +4,10 @@ import { StyleSheet, View } from 'react-native'
 import Constants from 'expo-constants'
 
 import { Nav } from './src/Components/Nav'
-import { Home } from './src/Home'
-import { ProductListPage } from './src/ProductListPage'
-import { TransactionHistoryPage } from './src/TransactionHistoryPage'
-import { BillBookPage } from './src/BillBookPage'
+import { Home } from './src/Pages/Home'
+import { ProductListPage } from './src/Pages/ProductListPage'
+import { TransactionHistoryPage } from './src/Pages/TransactionHistoryPage'
+import { BillBookPage } from './src/Pages/BillBookPage'
 
 axios.defaults.baseURL = Constants.expoConfig.extra.apiUrl
 

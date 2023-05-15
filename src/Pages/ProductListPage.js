@@ -12,8 +12,8 @@ import {
   Image,
   Keyboard,
 } from 'react-native'
-import { Button } from './Components/Button'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import { Button } from '../Components/Button'
 import { DetailProductPage } from './DetailProductPage'
 
 export const ProductListPage = () => {

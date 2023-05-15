@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native'
-import { Button } from './Components/Button'
-import { BillPaymentModal } from './Components/BillPaymentModal'
+import { Button } from '../Components/Button'
+import { BillPaymentModal } from '../Modules/BillPaymentModal'
 
 export const DetailTransactionPage = ({ transactionId, handle }) => {
   const [billPaymentModalVisible, setBillPaymentModalVisible] = useState(false)

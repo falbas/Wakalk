@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Modal } from 'react-native'
-import { Button } from './Button'
+import { Button } from '../Components/Button'
 
 export const SaveTransactionModal = ({
   visible,

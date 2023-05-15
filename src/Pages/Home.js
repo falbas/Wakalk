@@ -9,12 +9,12 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
-import { Button } from './Components/Button'
-import { SearchByNameModal } from './Components/SearchByNameModal'
-import { SearchByBarcodeModal } from './Components/SearchByBarcodeModal'
-import { SaveTransactionModal } from './Components/SaveTransactionModal'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import Checkbox from 'expo-checkbox'
+import { Button } from '../Components/Button'
+import { SearchByNameModal } from '../Modules/SearchByNameModal'
+import { SearchByBarcodeModal } from '../Modules/SearchByBarcodeModal'
+import { SaveTransactionModal } from '../Modules/SaveTransactionModal'
 
 export const Home = () => {
   const countTextInput = useRef(null)
