@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Modal } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Modal, Image } from 'react-native'
 import { Button } from '../Components/Button'
 
 export const SaveTransactionModal = ({
@@ -11,6 +11,7 @@ export const SaveTransactionModal = ({
 }) => {
   const [payLater, setPayLater] = useState(false)
   const [customer, setCustomer] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState('')
 
   const handleSaveTransaction = async (status) => {
     try {
@@ -32,29 +33,77 @@ export const SaveTransactionModal = ({
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.centeredView}>
         <View style={styles.container}>
-          {!payLater && (
+          {paymentMethod === '' && (
             <View>
-              <Text style={styles.titleText}>Simpan Transaksi</Text>
+              <Text style={styles.titleText}>Pilih Metode Pembayaran</Text>
               <Text style={styles.bodyText}>
-                Transaksi sudah dibayar dan ingin disimpan?
+                Pilih metode pembayaran yang ingin digunakan
               </Text>
               <View style={styles.buttonContainer}>
                 <Button
-                  style={styles.confirmationAButton}
-                  onPress={() => handleSaveTransaction('paid')}
+                  style={styles.button}
+                  onPress={() => setPaymentMethod('cash')}
                 >
-                  Simpan
+                  Cash
                 </Button>
                 <Button
-                  style={styles.confirmationBButton}
-                  onPress={() => setPayLater(!payLater)}
+                  style={styles.button}
+                  onPress={() => setPaymentMethod('qris')}
+                >
+                  QRIS
+                </Button>
+                <Button
+                  style={[styles.button, { backgroundColor: '#FF0000' }]}
+                  onPress={() => setPaymentMethod('paylater')}
                 >
                   Bayar Nanti
                 </Button>
               </View>
             </View>
           )}
-          {payLater && (
+          {paymentMethod === 'cash' && (
+            <View>
+              <Text style={styles.titleText}>Cash</Text>
+              <Text style={styles.bodyText}>Bayar secara cash</Text>
+              <View style={styles.buttonContainer}>
+                <Button style={styles.button}>Simpan</Button>
+                <Button
+                  style={styles.button}
+                  onPress={() => setPaymentMethod('')}
+                >
+                  Ubah Metode Pembayaran
+                </Button>
+              </View>
+            </View>
+          )}
+          {paymentMethod === 'qris' && (
+            <View>
+              <Text style={styles.titleText}>QRIS</Text>
+              <Text style={styles.bodyText}>
+                Silahkan scan QR berikut untuk pembayaran
+              </Text>
+              <Image
+                style={{
+                  width: 200,
+                  height: 200,
+                  alignSelf: 'center',
+                  marginTop: 10,
+                }}
+                resizeMode="contain"
+                source={require('../../assets/qr-gojek.jpeg')}
+              />
+              <View style={styles.buttonContainer}>
+                <Button style={styles.button}>Simpan</Button>
+                <Button
+                  style={styles.button}
+                  onPress={() => setPaymentMethod('')}
+                >
+                  Ubah Metode Pembayaran
+                </Button>
+              </View>
+            </View>
+          )}
+          {paymentMethod === 'paylater' && (
             <View>
               <Text style={styles.titleText}>Bayar Nanti</Text>
               <Text style={styles.bodyText}>
@@ -69,20 +118,22 @@ export const SaveTransactionModal = ({
               />
               <View style={styles.buttonContainer}>
                 <Button
-                  style={[
-                    styles.confirmationAButton,
-                    { flexBasis: '100%' },
-                    customer === '' && { opacity: 0.75 },
-                  ]}
+                  style={[styles.button, customer === '' && { opacity: 0.75 }]}
                   onPress={() => handleSaveTransaction('unpaid')}
                   disabled={customer === ''}
                 >
                   Bayar Nanti
                 </Button>
+                <Button
+                  style={styles.button}
+                  onPress={() => setPaymentMethod('')}
+                >
+                  Ubah Metode Pembayaran
+                </Button>
               </View>
             </View>
           )}
-          <Button style={styles.cancelButton} onPress={() => handle('cancel')}>
+          <Button style={styles.button} onPress={() => handle('cancel')}>
             Batal
           </Button>
         </View>
@@ -121,20 +172,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  confirmationAButton: {
-    flexBasis: '50%',
-    marginHorizontal: 5,
-  },
-  confirmationBButton: {
-    flexBasis: '50%',
-    marginHorizontal: 5,
-    backgroundColor: '#FF0000',
-  },
-  cancelButton: {
     marginTop: 10,
-    marginHorizontal: 5,
+  },
+  button: {
+    marginTop: 5,
   },
 })
