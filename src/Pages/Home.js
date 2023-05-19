@@ -31,6 +31,7 @@ export const Home = () => {
   const [alreadyInBuyedProduct, setAlreadyInBuyedProduct] = useState(false)
 
   const [scannedData, setScannedData] = useState({
+    id: '',
     barcode: '',
     name: '',
     price: 0,
@@ -60,6 +61,7 @@ export const Home = () => {
         const product = response.data[0]
         if (product !== undefined) {
           setScannedData({
+            id: product.id,
             barcode: product.barcode,
             name: product.name,
             price: product.price,
@@ -128,6 +130,7 @@ export const Home = () => {
       }
       setScanned(false)
       setScannedData({
+        id: '',
         barcode: '',
         name: '',
         price: 0,
@@ -148,7 +151,7 @@ export const Home = () => {
     setBuyedProductChecked(updatedBuyedProductChecked)
   }
 
-  const handleDuplucateBuyedProduct = (item) => {
+  const handleDuplicateBuyedProduct = (item) => {
     const product = buyedProducts.filter((p) => p.barcode === item.barcode)[0]
 
     if (product !== undefined) {
@@ -164,13 +167,14 @@ export const Home = () => {
       setScannedData((prev) => {
         return {
           ...prev,
+          id: item.id,
           barcode: item.barcode,
           name: item.name,
           price: item.price,
         }
       })
       countTextInput.current.focus()
-      handleDuplucateBuyedProduct(item)
+      handleDuplicateBuyedProduct(item)
     }
     setSearchByBarcodeModalVisible(!searchByBarcodeModalVisible)
   }
@@ -180,12 +184,13 @@ export const Home = () => {
       setScannedData((prev) => {
         return {
           ...prev,
+          id: item.id,
           barcode: item.barcode,
           name: item.name,
           price: item.price,
         }
       })
-      handleDuplucateBuyedProduct(item)
+      handleDuplicateBuyedProduct(item)
       countTextInput.current.focus()
     }
     setSearchByNameModalVisible(!searchByNameModalVisible)

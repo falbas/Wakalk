@@ -9,7 +9,6 @@ export const SaveTransactionModal = ({
   total,
   buyedProducts,
 }) => {
-  const [payLater, setPayLater] = useState(false)
   const [customer, setCustomer] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
 
@@ -22,7 +21,19 @@ export const SaveTransactionModal = ({
         products: buyedProducts,
       })
       if (response.status === 200) {
-        handle()
+        buyedProducts.map((product) => {
+          axios.get(`/products/${product.id}`).then((getResponse) => {
+            axios
+              .put(`/products/${product.id}`, {
+                stock: getResponse.data.data.stock - product.count,
+              })
+              .then((putResponse) => {
+                if (putResponse.status === 200) {
+                  handle()
+                }
+              })
+          })
+        })
       }
     } catch (error) {
       console.error(error.message)
