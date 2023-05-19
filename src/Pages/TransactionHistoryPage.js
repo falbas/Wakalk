@@ -10,11 +10,12 @@ import {
 } from 'react-native'
 
 import { DetailTransactionPage } from './DetailTransactionPage'
+import { CreateReportPage } from './CreateReportPage'
+import { Button } from '../Components/Button'
 
 export const TransactionHistoryPage = () => {
   const [transactions, setTransaction] = useState([])
-  const [openDetailTransactionPage, setOpenDetailTransactionPage] =
-    useState(false)
+  const [activePage, setActivePage] = useState('transactionHistory')
   const [selectedTransaction, setSelectedTransaction] = useState({})
 
   const fetchData = async () => {
@@ -31,8 +32,18 @@ export const TransactionHistoryPage = () => {
   }, [])
 
   const handleOpenDetailTransactionPage = (item) => {
-    setOpenDetailTransactionPage(!openDetailTransactionPage)
+    setActivePage(
+      activePage === 'transactionHistory'
+        ? 'detailTransaction'
+        : 'transactionHistory'
+    )
     setSelectedTransaction(item)
+  }
+
+  const handleOpenCreateReportPage = () => {
+    setActivePage(
+      activePage === 'transactionHistory' ? 'createReport' : 'transactionHistory'
+    )
   }
 
   const renderItem = ({ item }) => (
@@ -52,10 +63,11 @@ export const TransactionHistoryPage = () => {
 
   return (
     <>
-      {!openDetailTransactionPage && (
+      {activePage === 'transactionHistory' && (
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Riwayat Transaksi</Text>
+            <Button onPress={handleOpenCreateReportPage}>Buat Laporan</Button>
           </View>
           {transactions.length > 0 ? (
             <SafeAreaView style={{ paddingBottom: 50 }}>
@@ -74,11 +86,15 @@ export const TransactionHistoryPage = () => {
         </View>
       )}
 
-      {openDetailTransactionPage && (
+      {activePage === 'detailTransaction' && (
         <DetailTransactionPage
           transactionId={selectedTransaction.id}
           handle={handleOpenDetailTransactionPage}
         />
+      )}
+
+      {activePage === 'createReport' && (
+        <CreateReportPage handle={handleOpenCreateReportPage} />
       )}
     </>
   )

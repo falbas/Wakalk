@@ -310,7 +310,7 @@ export const Home = () => {
               ref={countTextInput}
               onChangeText={(v) =>
                 setScannedData((prev) => {
-                  return { ...prev, count: v }
+                  return { ...prev, count: parseInt(v) }
                 })
               }
               value={

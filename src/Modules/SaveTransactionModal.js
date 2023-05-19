@@ -66,7 +66,12 @@ export const SaveTransactionModal = ({
               <Text style={styles.titleText}>Cash</Text>
               <Text style={styles.bodyText}>Bayar secara cash</Text>
               <View style={styles.buttonContainer}>
-                <Button style={styles.button}>Simpan</Button>
+                <Button
+                  style={styles.button}
+                  onPress={() => handleSaveTransaction('paid')}
+                >
+                  Simpan
+                </Button>
                 <Button
                   style={styles.button}
                   onPress={() => setPaymentMethod('')}
@@ -93,7 +98,12 @@ export const SaveTransactionModal = ({
                 source={require('../../assets/qr-gojek.jpeg')}
               />
               <View style={styles.buttonContainer}>
-                <Button style={styles.button}>Simpan</Button>
+                <Button
+                  style={styles.button}
+                  onPress={() => handleSaveTransaction('paid')}
+                >
+                  Simpan
+                </Button>
                 <Button
                   style={styles.button}
                   onPress={() => setPaymentMethod('')}
