@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   FlatList,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native'
 import { Button } from '../Components/Button'
+import { CustomTextInput } from '../Components/CustomTextInput'
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
 import { DetailTransactionPage } from './DetailTransactionPage'
 import { PrintReportPage } from './PrintReportPage'
@@ -111,28 +111,22 @@ export const CreateReportPage = ({ handle }) => {
             </Button>
           </View>
           <View style={styles.bodyContainer}>
-            <View>
-              <Text style={styles.textTextInput}>Dari Tanggal</Text>
-              <TextInput
-                style={styles.textInput}
-                onPressIn={() => showDatepicker('start')}
-                showSoftInputOnFocus={false}
-                value={`${startDate.getDate()}-${
-                  startDate.getMonth() + 1
-                }-${startDate.getFullYear()}`}
-              />
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Sampai Tanggal</Text>
-              <TextInput
-                style={styles.textInput}
-                onPressIn={() => showDatepicker('end')}
-                showSoftInputOnFocus={false}
-                value={`${endDate.getDate()}-${
-                  endDate.getMonth() + 1
-                }-${endDate.getFullYear()}`}
-              />
-            </View>
+            <CustomTextInput
+              title={'Dari Tanggal'}
+              onPressIn={() => showDatepicker('start')}
+              showSoftInputOnFocus={false}
+              value={`${startDate.getDate()}-${
+                startDate.getMonth() + 1
+              }-${startDate.getFullYear()}`}
+            />
+            <CustomTextInput
+              title={'Sampai Tanggal'}
+              onPressIn={() => showDatepicker('end')}
+              showSoftInputOnFocus={false}
+              value={`${endDate.getDate()}-${
+                endDate.getMonth() + 1
+              }-${endDate.getFullYear()}`}
+            />
             <Button style={{ marginTop: 10 }} onPress={getReport}>
               Buat Laporan
             </Button>

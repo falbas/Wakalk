@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Modal,
 } from 'react-native'
 import { Button } from '../Components/Button'
+import { CustomTextInput } from '../Components/CustomTextInput'
 
 export const SearchByNameModal = ({ visible, handler, value }) => {
   const [searchNameValue, setSearchNameValue] = useState(value)
@@ -29,9 +29,7 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
 
   const fetchData = async (v) => {
     try {
-      const { data: response } = await axios.get(
-        `/products?name=${v}`
-      )
+      const { data: response } = await axios.get(`/products?name=${v}`)
       setSearchResult(response.data)
     } catch (error) {
       console.error(error.message)
@@ -41,9 +39,8 @@ export const SearchByNameModal = ({ visible, handler, value }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
-        <Text style={styles.textTextInput}>Cari produk berdasarkan nama</Text>
-        <TextInput
-          style={styles.searchTextInput}
+        <CustomTextInput
+          title={'Cari produk berdasarkan nama'}
           onChangeText={(v) => setSearchNameValue(v)}
           value={searchNameValue}
           autoFocus

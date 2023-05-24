@@ -4,14 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   ScrollView,
-  Image,
   TouchableOpacity,
 } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import Checkbox from 'expo-checkbox'
 import { Button } from '../Components/Button'
+import { CustomTextInput } from '../Components/CustomTextInput'
 import { SearchByNameModal } from '../Modules/SearchByNameModal'
 import { SearchByBarcodeModal } from '../Modules/SearchByBarcodeModal'
 import { SaveTransactionModal } from '../Modules/SaveTransactionModal'
@@ -277,53 +276,33 @@ export const Home = () => {
 
       <View style={styles.bottomContainer}>
         <ScrollView>
-          <View>
-            <Text style={styles.textTextInput}>Barcode Produk</Text>
-            <TextInput
-              style={styles.addTextInput}
-              keyboardType="numeric"
-              value={scannedData.barcode}
-              onPressIn={() => setSearchByBarcodeModalVisible(true)}
-              placeholder="Barcode Produk *"
-            />
-            <View style={styles.iconScanContainer}>
-              <TouchableOpacity
-                style={styles.iconScanButton}
-                onPress={handleOpenScanner}
-              >
-                <Image
-                  style={styles.iconScan}
-                  source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.textTextInput}>Nama Produk</Text>
-            <TextInput
-              style={styles.addTextInput}
-              value={scannedData.name}
-              onPressIn={() => setSearchByNameModalVisible(true)}
-              placeholder="Nama Produk *"
-            />
-          </View>
-          <View>
-            <Text style={styles.textTextInput}>Jumlah</Text>
-            <TextInput
-              style={styles.addTextInput}
-              keyboardType="numeric"
-              ref={countTextInput}
-              onChangeText={(v) =>
-                setScannedData((prev) => {
-                  return { ...prev, count: parseInt(v) }
-                })
-              }
-              value={
-                scannedData.count === 0 ? '' : scannedData.count.toString()
-              }
-              placeholder="Jumlah *"
-            />
-          </View>
+          <CustomTextInput
+            title={'Barcode Produk'}
+            keyboardType="numeric"
+            value={scannedData.barcode}
+            onPressIn={() => setSearchByBarcodeModalVisible(true)}
+            placeholder={'Barcode Produk *'}
+            buttonHandler={handleOpenScanner}
+            iconUri={'https://reactnative.dev/img/tiny_logo.png'}
+          />
+          <CustomTextInput
+            title={'Nama Produk'}
+            value={scannedData.name}
+            onPressIn={() => setSearchByNameModalVisible(true)}
+            placeholder={'Nama Produk *'}
+          />
+          <CustomTextInput
+            title={'Jumlah'}
+            keyboardType="numeric"
+            ref={countTextInput}
+            onChangeText={(v) =>
+              setScannedData((prev) => {
+                return { ...prev, count: parseInt(v) }
+              })
+            }
+            value={scannedData.count === 0 ? '' : scannedData.count.toString()}
+            placeholder={'Jumlah *'}
+          />
           <Button
             style={[
               { marginTop: 10 },
@@ -420,26 +399,5 @@ const styles = StyleSheet.create({
   resetButton: {
     backgroundColor: '#FF0000',
     marginRight: 10,
-  },
-  textTextInput: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  addTextInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#B4B4B4',
-  },
-  iconScanContainer: {
-    position: 'absolute',
-    right: 0,
-    bottom: 5,
-  },
-  iconScanButton: {
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-  },
-  iconScan: {
-    height: 30,
-    width: 30,
   },
 })

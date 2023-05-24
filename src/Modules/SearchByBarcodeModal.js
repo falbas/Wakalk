@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Modal,
 } from 'react-native'
 import { Button } from '../Components/Button'
+import { CustomTextInput } from '../Components/CustomTextInput'
 
 export const SearchByBarcodeModal = ({ visible, handler, value }) => {
   const [searchBarcodeValue, setSearchBarcodeValue] = useState(value)
@@ -29,9 +29,7 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
 
   const fetchData = async (v) => {
     try {
-      const { data: response } = await axios.get(
-        `/products?barcode=${v}`
-      )
+      const { data: response } = await axios.get(`/products?barcode=${v}`)
       setSearchResult(response.data)
     } catch (error) {
       console.error(error.message)
@@ -41,11 +39,8 @@ export const SearchByBarcodeModal = ({ visible, handler, value }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
-        <Text style={styles.textTextInput}>
-          Cari produk berdasarkan barcode
-        </Text>
-        <TextInput
-          style={styles.searchTextInput}
+        <CustomTextInput
+          title={'Cari produk berdasarkan barcode'}
           keyboardType="numeric"
           onChangeText={(v) => setSearchBarcodeValue(v)}
           value={searchBarcodeValue}
@@ -79,14 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginHorizontal: 20,
     marginTop: 20,
-  },
-  textTextInput: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  searchTextInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#B4B4B4',
   },
   resultContainer: {
     marginTop: 5,

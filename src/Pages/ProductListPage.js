@@ -8,12 +8,11 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
-  TextInput,
-  Image,
   Keyboard,
 } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Button } from '../Components/Button'
+import { CustomTextInput } from '../Components/CustomTextInput'
 import { DetailProductPage } from './DetailProductPage'
 
 export const ProductListPage = () => {
@@ -198,58 +197,39 @@ export const ProductListPage = () => {
             </View>
           </View>
           <ScrollView style={styles.productListContainer}>
-            <View>
-              <Text style={styles.textTextInput}>Barcode Produk</Text>
-              <TextInput
-                style={styles.addTextInput}
-                keyboardType="numeric"
-                value={inputProduct.barcode}
-                onChangeText={(v) => handleInputProduct('barcode', v)}
-              />
-              <View style={styles.iconScanContainer}>
-                <TouchableOpacity
-                  style={styles.iconScanButton}
-                  onPress={handleOpenScanner}
-                >
-                  <Image
-                    style={styles.iconScan}
-                    source={{
-                      uri: 'https://reactnative.dev/img/tiny_logo.png',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Nama Produk</Text>
-              <TextInput
-                style={styles.addTextInput}
-                value={inputProduct.name}
-                onChangeText={(v) => handleInputProduct('name', v)}
-              />
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Harga</Text>
-              <TextInput
-                style={styles.addTextInput}
-                keyboardType="numeric"
-                value={
-                  inputProduct.price === 0 ? '' : inputProduct.price.toString()
-                }
-                onChangeText={(v) => handleInputProduct('price', v)}
-              />
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Stok</Text>
-              <TextInput
-                style={styles.addTextInput}
-                keyboardType="numeric"
-                value={
-                  inputProduct.stock === 0 ? '' : inputProduct.stock.toString()
-                }
-                onChangeText={(v) => handleInputProduct('stock', v)}
-              />
-            </View>
+            <CustomTextInput
+              title={'Barcode Produk'}
+              keyboardType="numeric"
+              value={inputProduct.barcode}
+              onChangeText={(v) => handleInputProduct('barcode', v)}
+              placeholder={'Barcode Produk *'}
+              buttonHandler={handleOpenScanner}
+              iconUri={'https://reactnative.dev/img/tiny_logo.png'}
+            />
+            <CustomTextInput
+              title={'Nama Produk'}
+              value={inputProduct.name}
+              onChangeText={(v) => handleInputProduct('name', v)}
+              placeholder={'Nama Produk *'}
+            />
+            <CustomTextInput
+              title={'Harga'}
+              keyboardType="numeric"
+              value={
+                inputProduct.price === 0 ? '' : inputProduct.price.toString()
+              }
+              onChangeText={(v) => handleInputProduct('price', v)}
+              placeholder={'Harga *'}
+            />
+            <CustomTextInput
+              title={'Stok'}
+              keyboardType="numeric"
+              value={
+                inputProduct.stock === 0 ? '' : inputProduct.stock.toString()
+              }
+              onChangeText={(v) => handleInputProduct('stock', v)}
+              placeholder={'Stok *'}
+            />
             <Button
               style={{ marginVertical: 10 }}
               onPress={handleAddProductButton}

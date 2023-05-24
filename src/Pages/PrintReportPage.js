@@ -83,7 +83,7 @@ export const PrintReportPage = ({
     </head>
     <body>
       <header>
-        <h1 style="text-align: center;">Laporan Penjualan</h1>
+        <h1 style="text-align: center;">Laporan Penjualan Toko Farhan</h1>
         <h2 style="text-align: center;">${formattedStartDate} - ${formattedEndDate}</h2>
         <table style="text-align: left; font-size: 20px; margin-top: 48px">
           <tr>
