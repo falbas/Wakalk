@@ -20,7 +20,7 @@ export const CustomTextInput = forwardRef((props, ref) => {
     autoFocus,
     showSoftInputOnFocus,
     buttonHandler,
-    iconUri = 'https://reactnative.dev/img/tiny_logo.png',
+    iconSrc = { uri: 'https://reactnative.dev/img/tiny_logo.png' },
   } = props
   return (
     <View style={style}>
@@ -42,7 +42,7 @@ export const CustomTextInput = forwardRef((props, ref) => {
             style={styles.iconScanButton}
             onPress={buttonHandler}
           >
-            <Image style={styles.iconScan} source={{ uri: iconUri }} />
+            <Image style={styles.iconScan} source={iconSrc} />
           </TouchableOpacity>
         </View>
       )}

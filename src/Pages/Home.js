@@ -283,7 +283,7 @@ export const Home = () => {
             onPressIn={() => setSearchByBarcodeModalVisible(true)}
             placeholder={'Barcode Produk *'}
             buttonHandler={handleOpenScanner}
-            iconUri={'https://reactnative.dev/img/tiny_logo.png'}
+            iconSrc={require('../../assets/barcode-scanner.png')}
           />
           <CustomTextInput
             title={'Nama Produk'}

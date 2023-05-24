@@ -29,7 +29,7 @@ export const Nav = ({ onSwitch }) => {
           >
             <Image
               style={styles.navIcon}
-              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+              source={require('../../assets/cart.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -38,7 +38,7 @@ export const Nav = ({ onSwitch }) => {
           >
             <Image
               style={styles.navIcon}
-              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+              source={require('../../assets/product.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -47,7 +47,7 @@ export const Nav = ({ onSwitch }) => {
           >
             <Image
               style={styles.navIcon}
-              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+              source={require('../../assets/history.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -56,7 +56,7 @@ export const Nav = ({ onSwitch }) => {
           >
             <Image
               style={styles.navIcon}
-              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+              source={require('../../assets/bill.png')}
             />
           </TouchableOpacity>
         </View>

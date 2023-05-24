@@ -106,7 +106,7 @@ export const SaveTransactionModal = ({
                   marginTop: 10,
                 }}
                 resizeMode="contain"
-                source={require('../../assets/qr-gojek.jpeg')}
+                source={require('../../assets/qr-qris.jpeg')}
               />
               <View style={styles.buttonContainer}>
                 <Button
