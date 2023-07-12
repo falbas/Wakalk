@@ -2,10 +2,8 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native'
 import { Button } from '../Components/Button'
-import { ConfirmModal } from '../Components/ConfirmModal'
 
-export const DetailTransactionPage = ({ transactionId, handle }) => {
-  const [billPaymentModalVisible, setBillPaymentModalVisible] = useState(false)
+export const TransactionDetailPage = ({ transactionId, handle }) => {
   const [transaction, setTransaction] = useState()
 
   const fetchData = async () => {
@@ -22,22 +20,6 @@ export const DetailTransactionPage = ({ transactionId, handle }) => {
   useEffect(() => {
     fetchData()
   }, [])
-
-  const handleBillPayment = async () => {
-    try {
-      const response = await axios.put(`/transactions/${transactionId}`, {
-        status: 'paid',
-        customer: transaction.customer,
-        total: transaction.total,
-        products: transaction.products,
-      })
-      if (response.status === 200) {
-        fetchData()
-      }
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
 
   const renderItem = ({ item }) => (
     <View style={styles.productItem}>
@@ -62,18 +44,16 @@ export const DetailTransactionPage = ({ transactionId, handle }) => {
           </View>
           <View style={styles.dateContainer}>
             <Text>
-              {transaction.status === 'paid' ? 'Lunas' : 'Belum Dibayar'}
-            </Text>
-            <Text>
               {new Date(transaction.createdAt).toLocaleString('id-ID', {
                 weekday: 'long',
                 hour12: false,
               })}
             </Text>
-
-            {transaction.status === 'unpaid' && (
-              <Text>{transaction.customer}</Text>
-            )}
+            <Text>
+              {'Metode Pembayaran: '}
+              {transaction.paymentMethod == 'cash' && 'Cash'}
+              {transaction.paymentMethod == 'qris' && 'QRIS'}
+            </Text>
           </View>
           <SafeAreaView>
             <FlatList
@@ -88,24 +68,6 @@ export const DetailTransactionPage = ({ transactionId, handle }) => {
             <Text>Rp{transaction.total}</Text>
           </View>
         </View>
-        {transaction.status === 'unpaid' && (
-          <>
-            <View style={styles.bottomContainer}>
-              <Button onPress={() => setBillPaymentModalVisible(true)}>
-                Sudah Dibayar
-              </Button>
-            </View>
-            <ConfirmModal
-              visible={billPaymentModalVisible}
-              title={'Konfirmasi Pembayaran'}
-              body={'Transaksi sudah dibayar dan hapus dari daftar utang?'}
-              yesText={'Simpan'}
-              yesHandler={handleBillPayment}
-              noText={'Batal'}
-              noHandler={() => setBillPaymentModalVisible(false)}
-            />
-          </>
-        )}
       </>
     )
   }

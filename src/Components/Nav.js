@@ -25,7 +25,7 @@ export const Nav = ({ onSwitch }) => {
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.navIconContainer}
-            onPress={() => onSwitch('home')}
+            onPress={() => onSwitch('Home')}
           >
             <Image
               style={styles.navIcon}
@@ -34,7 +34,7 @@ export const Nav = ({ onSwitch }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navIconContainer}
-            onPress={() => onSwitch('productlistpage')}
+            onPress={() => onSwitch('ProductsPage')}
           >
             <Image
               style={styles.navIcon}
@@ -43,20 +43,11 @@ export const Nav = ({ onSwitch }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navIconContainer}
-            onPress={() => onSwitch('transactionhistorypage')}
+            onPress={() => onSwitch('TransactionsPage')}
           >
             <Image
               style={styles.navIcon}
               source={require('../../assets/history.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.navIconContainer}
-            onPress={() => onSwitch('billbookpage')}
-          >
-            <Image
-              style={styles.navIcon}
-              source={require('../../assets/bill.png')}
             />
           </TouchableOpacity>
         </View>

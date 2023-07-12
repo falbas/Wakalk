@@ -11,10 +11,10 @@ import {
 import { Button } from '../Components/Button'
 import { CustomTextInput } from '../Components/CustomTextInput'
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
-import { DetailTransactionPage } from './DetailTransactionPage'
-import { PrintReportPage } from './PrintReportPage'
+import { TransactionDetailPage } from './TransactionDetailPage'
+import { ReportPrintPage } from './ReportPrintPage'
 
-export const CreateReportPage = ({ handle }) => {
+export const ReportCreatePage = ({ handle }) => {
   const [activePage, setActivePage] = useState('createReport')
 
   const [startDate, setStartDate] = useState(() => {
@@ -62,14 +62,14 @@ export const CreateReportPage = ({ handle }) => {
     }
   }
 
-  const handleOpenDetailTransactionPage = (item) => {
+  const handleOpenTransactionDetailPage = (item) => {
     setActivePage(
       activePage === 'createReport' ? 'detailTransaction' : 'createReport'
     )
     setSelectedTransaction(item)
   }
 
-  const handleOpenPrintReportPage = () => {
+  const handleOpenReportPrintPage = () => {
     setActivePage(
       activePage === 'createReport' ? 'printReport' : 'createReport'
     )
@@ -78,7 +78,7 @@ export const CreateReportPage = ({ handle }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.transactionItem}
-      onPress={() => handleOpenDetailTransactionPage(item)}
+      onPress={() => handleOpenTransactionDetailPage(item)}
     >
       <View>
         <Text>
@@ -104,7 +104,7 @@ export const CreateReportPage = ({ handle }) => {
             </View>
             <Button
               style={transactions.length === 0 && { opacity: 0.75 }}
-              onPress={handleOpenPrintReportPage}
+              onPress={handleOpenReportPrintPage}
               disabled={transactions.length === 0}
             >
               Cetak Laporan
@@ -141,16 +141,16 @@ export const CreateReportPage = ({ handle }) => {
         </View>
       )}
       {activePage === 'printReport' && (
-        <PrintReportPage
-          handle={handleOpenPrintReportPage}
+        <ReportPrintPage
+          handle={handleOpenReportPrintPage}
           transactions={transactions}
           startDate={startDate}
           endDate={endDate}
         />
       )}
       {activePage === 'detailTransaction' && (
-        <DetailTransactionPage
-          handle={handleOpenDetailTransactionPage}
+        <TransactionDetailPage
+          handle={handleOpenTransactionDetailPage}
           transactionId={selectedTransaction.id}
         />
       )}

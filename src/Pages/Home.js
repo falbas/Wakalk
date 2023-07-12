@@ -66,6 +66,8 @@ export const Home = () => {
             price: product.price,
             count: 0,
           })
+          countTextInput.current.focus()
+          handleDuplicateBuyedProduct(product)
         } else {
           alert(`Produk dengan barcode ${data} tidak ada di etalase`)
         }
@@ -74,8 +76,6 @@ export const Home = () => {
       }
     }
     fetchData(data)
-
-    countTextInput.current.focus()
   }
 
   const handleOpenScanner = () => {
@@ -125,6 +125,7 @@ export const Home = () => {
           return { ...item, price, count }
         })
         setBuyedProducts(updatedBuyedProduct)
+        setAlreadyInBuyedProduct(false)
         setTotal(updatedTotal)
       }
       setScanned(false)
@@ -208,7 +209,7 @@ export const Home = () => {
       {!scannerIsVisible && (
         <View style={styles.topContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>Wakalk</Text>
+            <Text style={styles.titleText}>Kasir Portabel</Text>
             <View style={{ flexDirection: 'row' }}>
               <Button
                 style={[
@@ -295,11 +296,14 @@ export const Home = () => {
             title={'Jumlah'}
             keyboardType="numeric"
             ref={countTextInput}
-            onChangeText={(v) =>
+            onChangeText={(v) => {
+              if (v === '') {
+                v = 0
+              }
               setScannedData((prev) => {
                 return { ...prev, count: parseInt(v) }
               })
-            }
+            }}
             value={scannedData.count === 0 ? '' : scannedData.count.toString()}
             placeholder={'Jumlah *'}
           />

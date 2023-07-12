@@ -5,18 +5,15 @@ import {
   Text,
   View,
   TouchableOpacity,
-  FlatList,
-  SafeAreaView,
   ScrollView,
   TextInput,
   Image,
-  Keyboard,
 } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Button } from '../Components/Button'
 import { ConfirmModal } from '../Components/ConfirmModal'
 
-export const DetailProductPage = ({ productId, handler }) => {
+export const ProductDetailPage = ({ productId, handler }) => {
   const [hasPermission, setHasPermission] = useState(null)
   const [scannerIsVisible, setScannerIsVisible] = useState(false)
   const [scanned, setScanned] = useState(false)

@@ -9,11 +9,11 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import { DetailTransactionPage } from './DetailTransactionPage'
-import { CreateReportPage } from './CreateReportPage'
+import { TransactionDetailPage } from './TransactionDetailPage'
+import { ReportCreatePage } from './ReportCreatePage'
 import { Button } from '../Components/Button'
 
-export const TransactionHistoryPage = () => {
+export const TransactionsPage = () => {
   const [transactions, setTransaction] = useState([])
   const [activePage, setActivePage] = useState('transactionHistory')
   const [selectedTransaction, setSelectedTransaction] = useState({})
@@ -31,7 +31,7 @@ export const TransactionHistoryPage = () => {
     fetchData()
   }, [])
 
-  const handleOpenDetailTransactionPage = (item) => {
+  const handleOpenTransactionDetailPage = (item) => {
     setActivePage(
       activePage === 'transactionHistory'
         ? 'detailTransaction'
@@ -40,7 +40,7 @@ export const TransactionHistoryPage = () => {
     setSelectedTransaction(item)
   }
 
-  const handleOpenCreateReportPage = () => {
+  const handleOpenReportCreatePage = () => {
     setActivePage(
       activePage === 'transactionHistory' ? 'createReport' : 'transactionHistory'
     )
@@ -49,7 +49,7 @@ export const TransactionHistoryPage = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.productItem}
-      onPress={() => handleOpenDetailTransactionPage(item)}
+      onPress={() => handleOpenTransactionDetailPage(item)}
     >
       <Text>
         {new Date(item.createdAt).toLocaleString('id-ID', {
@@ -67,7 +67,7 @@ export const TransactionHistoryPage = () => {
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Riwayat Transaksi</Text>
-            <Button onPress={handleOpenCreateReportPage}>Buat Laporan</Button>
+            <Button onPress={handleOpenReportCreatePage}>Buat Laporan</Button>
           </View>
           {transactions.length > 0 ? (
             <SafeAreaView style={{ paddingBottom: 50 }}>
@@ -87,14 +87,14 @@ export const TransactionHistoryPage = () => {
       )}
 
       {activePage === 'detailTransaction' && (
-        <DetailTransactionPage
+        <TransactionDetailPage
           transactionId={selectedTransaction.id}
-          handle={handleOpenDetailTransactionPage}
+          handle={handleOpenTransactionDetailPage}
         />
       )}
 
       {activePage === 'createReport' && (
-        <CreateReportPage handle={handleOpenCreateReportPage} />
+        <ReportCreatePage handle={handleOpenReportCreatePage} />
       )}
     </>
   )

@@ -13,9 +13,9 @@ import {
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Button } from '../Components/Button'
 import { CustomTextInput } from '../Components/CustomTextInput'
-import { DetailProductPage } from './DetailProductPage'
+import { ProductDetailPage } from './ProductDetailPage'
 
-export const ProductListPage = () => {
+export const ProductsPage = () => {
   const [hasPermission, setHasPermission] = useState(null)
   const [scannerIsVisible, setScannerIsVisible] = useState(false)
   const [scanned, setScanned] = useState(false)
@@ -23,7 +23,7 @@ export const ProductListPage = () => {
 
   const [products, setProducts] = useState()
   const [openAddProductPage, setOpenAddProductPage] = useState(false)
-  const [openDetailProductPage, setOpenDetailProductPage] = useState(false)
+  const [openProductDetailPage, setOpenProductDetailPage] = useState(false)
   const [selectedProductId, setSelectedProductId] = useState(false)
 
   const [inputProduct, setInputProduct] = useState({
@@ -122,8 +122,8 @@ export const ProductListPage = () => {
     }
   }
 
-  const handleDetailProductPage = (itemId) => {
-    setOpenDetailProductPage(!openDetailProductPage)
+  const handleProductDetailPage = (itemId) => {
+    setOpenProductDetailPage(!openProductDetailPage)
     setOpenAddProductPage(false)
     setScannerIsVisible(false)
     setSelectedProductId(itemId)
@@ -133,7 +133,7 @@ export const ProductListPage = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.productItem}
-      onPress={() => handleDetailProductPage(item.id)}
+      onPress={() => handleProductDetailPage(item.id)}
     >
       <View>
         <Text>{item.name}</Text>
@@ -148,7 +148,7 @@ export const ProductListPage = () => {
 
   return (
     <>
-      {!scannerIsVisible && !openDetailProductPage && (
+      {!scannerIsVisible && !openProductDetailPage && (
         <View
           style={[
             styles.topContainer,
@@ -240,10 +240,10 @@ export const ProductListPage = () => {
         </View>
       )}
 
-      {openDetailProductPage && (
-        <DetailProductPage
+      {openProductDetailPage && (
+        <ProductDetailPage
           productId={selectedProductId}
-          handler={handleDetailProductPage}
+          handler={handleProductDetailPage}
         />
       )}
     </>

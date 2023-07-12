@@ -9,15 +9,13 @@ export const SaveTransactionModal = ({
   total,
   buyedProducts,
 }) => {
-  const [customer, setCustomer] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
 
   const handleSaveTransaction = async (status) => {
     try {
       const response = await axios.post('/transactions', {
-        status: status,
-        customer: customer,
         total: total,
+        paymentMethod: paymentMethod,
         products: buyedProducts,
       })
       if (response.status === 200) {
@@ -62,12 +60,6 @@ export const SaveTransactionModal = ({
                   onPress={() => setPaymentMethod('qris')}
                 >
                   QRIS
-                </Button>
-                <Button
-                  style={[styles.button, { backgroundColor: '#FF0000' }]}
-                  onPress={() => setPaymentMethod('paylater')}
-                >
-                  Bayar Nanti
                 </Button>
               </View>
             </View>
@@ -114,36 +106,6 @@ export const SaveTransactionModal = ({
                   onPress={() => handleSaveTransaction('paid')}
                 >
                   Simpan
-                </Button>
-                <Button
-                  style={styles.button}
-                  onPress={() => setPaymentMethod('')}
-                >
-                  Ubah Metode Pembayaran
-                </Button>
-              </View>
-            </View>
-          )}
-          {paymentMethod === 'paylater' && (
-            <View>
-              <Text style={styles.titleText}>Bayar Nanti</Text>
-              <Text style={styles.bodyText}>
-                Transaksi akan dibayar nanti dan dimasukan ke buku utang,
-                masukan nama pembeli
-              </Text>
-              <TextInput
-                style={styles.payLaterTextInput}
-                value={customer}
-                onChangeText={(v) => setCustomer(v)}
-                placeholder="Nama Pembeli *"
-              />
-              <View style={styles.buttonContainer}>
-                <Button
-                  style={[styles.button, customer === '' && { opacity: 0.75 }]}
-                  onPress={() => handleSaveTransaction('unpaid')}
-                  disabled={customer === ''}
-                >
-                  Bayar Nanti
                 </Button>
                 <Button
                   style={styles.button}

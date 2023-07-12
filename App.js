@@ -5,14 +5,13 @@ import Constants from 'expo-constants'
 
 import { Nav } from './src/Components/Nav'
 import { Home } from './src/Pages/Home'
-import { ProductListPage } from './src/Pages/ProductListPage'
-import { TransactionHistoryPage } from './src/Pages/TransactionHistoryPage'
-import { BillBookPage } from './src/Pages/BillBookPage'
+import { ProductsPage } from './src/Pages/ProductsPage'
+import { TransactionsPage } from './src/Pages/TransactionsPage'
 
 axios.defaults.baseURL = Constants.expoConfig.extra.apiUrl
 
 export default function App() {
-  const [activePage, setActivePage] = useState('home')
+  const [activePage, setActivePage] = useState('Home')
 
   const switchPage = (page) => {
     setActivePage(page)
@@ -21,10 +20,9 @@ export default function App() {
   return (
     <>
       <View style={styles.container}>
-        {activePage === 'home' && <Home />}
-        {activePage === 'productlistpage' && <ProductListPage />}
-        {activePage === 'transactionhistorypage' && <TransactionHistoryPage />}
-        {activePage === 'billbookpage' && <BillBookPage />}
+        {activePage === 'Home' && <Home />}
+        {activePage === 'ProductsPage' && <ProductsPage />}
+        {activePage === 'TransactionsPage' && <TransactionsPage />}
       </View>
       <Nav onSwitch={switchPage} />
     </>

@@ -4,7 +4,7 @@ import * as Print from 'expo-print'
 import { WebView } from 'react-native-webview'
 import { Button } from '../Components/Button'
 
-export const PrintReportPage = ({
+export const ReportPrintPage = ({
   handle,
   transactions,
   startDate,
