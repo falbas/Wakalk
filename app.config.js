@@ -2,8 +2,8 @@ require('dotenv').config()
 
 module.exports = {
   expo: {
-    name: 'Wakalk',
-    slug: 'Wakalk',
+    name: 'Kasir Portabel',
+    slug: 'Kasir-Portabel',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -18,7 +18,7 @@ module.exports = {
       supportsTablet: true,
     },
     android: {
-      package: 'com.falbas.wakalk',
+      package: 'com.falbas.kasirportabel',
       versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -38,7 +38,7 @@ module.exports = {
     ],
     extra: {
       eas: {
-        projectId: '75d3f2b8-1284-47d7-a24b-d5163e1f843a',
+        projectId: '921dca93-862e-4e3e-b3c7-5ecc37fed7e0',
       },
       apiUrl: process.env.BACKEND_URL,
     },

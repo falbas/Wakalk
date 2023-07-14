@@ -87,7 +87,6 @@ export const ReportCreatePage = ({ handle }) => {
             hour12: false,
           })}
         </Text>
-        <Text>{item.status === 'paid' ? 'Lunas' : 'Belum Lunas'}</Text>
         <Text>Rp{item.total}</Text>
       </View>
     </TouchableOpacity>
