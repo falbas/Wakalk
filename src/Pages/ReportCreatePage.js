@@ -173,14 +173,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
-  textTextInput: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  textInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#B4B4B4',
-  },
   transactionsContainer: {
     paddingBottom: 480,
     marginTop: 5,

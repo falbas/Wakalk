@@ -283,25 +283,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#B4B4B4',
   },
-  textTextInput: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  addTextInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#B4B4B4',
-  },
-  iconScanContainer: {
-    position: 'absolute',
-    right: 0,
-    bottom: 5,
-  },
-  iconScanButton: {
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-  },
-  iconScan: {
-    height: 30,
-    width: 30,
-  },
 })

@@ -77,10 +77,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  bottomContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-  },
   titleContainer: {
     flexDirection: 'row',
     paddingHorizontal: 20,

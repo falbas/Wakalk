@@ -11,8 +11,7 @@ export const ReportPrintPage = ({
   endDate,
 }) => {
   const [htmlProductList, setHtmlProductList] = useState('')
-  const [totalPaidTransaction, setTotalPaidTransaction] = useState(0)
-  const [totalUnpaidTransaction, setTotalUnpaidTransaction] = useState(0)
+  const [totalTransaction, setTotalTransaction] = useState(0)
   const [totalCountProduct, setTotalCountProduct] = useState(0)
   const formattedStartDate = new Date(startDate).toLocaleString('id-ID', {
     day: 'numeric',
@@ -29,14 +28,11 @@ export const ReportPrintPage = ({
     hour12: false,
   })
   useEffect(() => {
-    let tempTotalPaidTransaction = 0
-    let tempTotalUnpaidTransaction = 0
+    let tempTotalTransaction = 0
     let tempTotalCountProduct = 0
     let report = {}
     transactions.forEach((transaction) => {
-      transaction.status === 'paid'
-        ? (tempTotalPaidTransaction += transaction.total)
-        : (tempTotalUnpaidTransaction += transaction.total)
+      tempTotalTransaction += transaction.total
       transaction.products.forEach((product) => {
         report[product.barcode] = {
           barcode: product.barcode,
@@ -72,8 +68,7 @@ export const ReportPrintPage = ({
       `
     }
     setHtmlProductList(tempProductList)
-    setTotalPaidTransaction(tempTotalPaidTransaction)
-    setTotalUnpaidTransaction(tempTotalUnpaidTransaction)
+    setTotalTransaction(tempTotalTransaction)
     setTotalCountProduct(tempTotalCountProduct)
   }, [])
   const html = `
@@ -87,12 +82,8 @@ export const ReportPrintPage = ({
         <h2 style="text-align: center;">${formattedStartDate} - ${formattedEndDate}</h2>
         <table style="text-align: left; font-size: 20px; margin-top: 48px">
           <tr>
-            <th>Transaksi Lunas</th>
-            <th>: Rp${totalPaidTransaction}</th>
-          </tr>
-          <tr>
-            <th>Transaksi Belum Lunas</th>
-            <th>: Rp${totalUnpaidTransaction}</th>
+            <th>Total Transaksi</th>
+            <th>: Rp${totalTransaction}</th>
           </tr>
         </table>
       </header>
@@ -115,7 +106,7 @@ export const ReportPrintPage = ({
             <th style="padding: 8px; text-align: left;">Total</th>
             <th style="padding: 8px; text-align: left;">${totalCountProduct}</th>
             <th style="padding: 8px; text-align: left;">Rp${
-              totalPaidTransaction + totalUnpaidTransaction
+              totalTransaction
             }</th>
           </tr>
         </tfoot>
@@ -164,10 +155,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginLeft: 5,
-  },
-  bodyContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
   },
   webViewContainer: {
     marginVertical: 20,

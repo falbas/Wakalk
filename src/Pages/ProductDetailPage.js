@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Button } from '../Components/Button'
+import { CustomTextInput } from '../Components/CustomTextInput'
 import { ConfirmModal } from '../Components/ConfirmModal'
 
 export const ProductDetailPage = ({ productId, handler }) => {
@@ -113,70 +114,49 @@ export const ProductDetailPage = ({ productId, handler }) => {
             </Button>
           </View>
           <ScrollView style={styles.inputContainer}>
-            <View>
-              <Text style={styles.textTextInput}>Barcode Produk</Text>
-              <TextInput
-                style={styles.addTextInput}
-                value={product.barcode}
-                onChangeText={(v) => {
-                  setProduct((prev) => {
-                    return { ...prev, barcode: v }
-                  })
-                }}
-                keyboardType="numeric"
-              />
-              <View style={styles.iconScanContainer}>
-                <TouchableOpacity
-                  style={styles.iconScanButton}
-                  onPress={handleOpenScanner}
-                >
-                  <Image
-                    style={styles.iconScan}
-                    source={{
-                      uri: 'https://reactnative.dev/img/tiny_logo.png',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Nama Produk</Text>
-              <TextInput
-                style={styles.addTextInput}
-                value={product.name}
-                onChangeText={(v) => {
-                  setProduct((prev) => {
-                    return { ...prev, name: v }
-                  })
-                }}
-              />
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Harga</Text>
-              <TextInput
-                style={styles.addTextInput}
-                value={product.price.toString()}
-                onChangeText={(v) => {
-                  setProduct((prev) => {
-                    return { ...prev, price: v }
-                  })
-                }}
-                keyboardType="numeric"
-              />
-            </View>
-            <View>
-              <Text style={styles.textTextInput}>Stok</Text>
-              <TextInput
-                style={styles.addTextInput}
-                value={product.stock.toString()}
-                onChangeText={(v) => {
-                  setProduct((prev) => {
-                    return { ...prev, stock: v }
-                  })
-                }}
-                keyboardType="numeric"
-              />
-            </View>
+            <CustomTextInput
+              title={'Barcode Produk'}
+              keyboardType="numeric"
+              value={product.barcode}
+              onChangeText={(v) => {
+                setProduct((prev) => {
+                  return { ...prev, barcode: v }
+                })
+              }}
+              placeholder={'Barcode Produk *'}
+              buttonHandler={handleOpenScanner}
+              iconSrc={require('../../assets/barcode-scanner.png')}
+            />
+            <CustomTextInput
+              title={'Nama Produk'}
+              value={product.name}
+              placeholder={'Nama Produk *'}
+              onChangeText={(v) => {
+                setProduct((prev) => {
+                  return { ...prev, name: v }
+                })
+              }}
+            />
+            <CustomTextInput
+              title={'Harga'}
+              value={product.price.toString()}
+              placeholder={'Harga *'}
+              onChangeText={(v) => {
+                setProduct((prev) => {
+                  return { ...prev, price: v }
+                })
+              }}
+            />
+            <CustomTextInput
+              title={'Stok'}
+              value={product.stock.toString()}
+              placeholder={'Stok *'}
+              onChangeText={(v) => {
+                setProduct((prev) => {
+                  return { ...prev, stock: v }
+                })
+              }}
+            />
             <Button
               style={{ marginVertical: 10 }}
               onPress={() => setUpdateModalVisible(!updateModalVisible)}
@@ -235,26 +215,5 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
-  },
-  textTextInput: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  addTextInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#B4B4B4',
-  },
-  iconScanContainer: {
-    position: 'absolute',
-    right: 0,
-    bottom: 5,
-  },
-  iconScanButton: {
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-  },
-  iconScan: {
-    height: 30,
-    width: 30,
   },
 })
