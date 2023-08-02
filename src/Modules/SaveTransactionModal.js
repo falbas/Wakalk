@@ -12,26 +12,21 @@ export const SaveTransactionModal = ({
   const [paymentMethod, setPaymentMethod] = useState('')
 
   const handleSaveTransaction = async (status) => {
+    const products = buyedProducts.map((product) => {
+      return {
+        id: product.id,
+        count: product.count,
+      }
+    })
+
     try {
       const response = await axios.post('/transactions', {
         total: total,
         paymentMethod: paymentMethod,
-        products: buyedProducts,
+        products: products,
       })
       if (response.status === 200) {
-        buyedProducts.map((product) => {
-          axios.get(`/products/${product.id}`).then((getResponse) => {
-            axios
-              .put(`/products/${product.id}`, {
-                stock: getResponse.data.data.stock - product.count,
-              })
-              .then((putResponse) => {
-                if (putResponse.status === 200) {
-                  handle()
-                }
-              })
-          })
-        })
+        handle()
       }
     } catch (error) {
       console.error(error.message)

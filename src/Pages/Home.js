@@ -82,6 +82,7 @@ export const Home = () => {
     setScanned(false)
     setScannerIsVisible(!scannerIsVisible)
     setScannedData({
+      id: '',
       barcode: '',
       name: '',
       price: 0,
