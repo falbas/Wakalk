@@ -17,11 +17,7 @@ import { ReportPrintPage } from './ReportPrintPage'
 export const ReportCreatePage = ({ handle }) => {
   const [activePage, setActivePage] = useState('createReport')
 
-  const [startDate, setStartDate] = useState(() => {
-    const currentDate = new Date()
-    currentDate.setHours(0, 0, 0, 0)
-    return currentDate
-  })
+  const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [transactions, setTransactions] = useState([])
   const [selectedTransaction, setSelectedTransaction] = useState({})
@@ -31,9 +27,7 @@ export const ReportCreatePage = ({ handle }) => {
       DateTimePickerAndroid.open({
         value: startDate,
         onChange: (event, selectedDate) => {
-          const currentDate = selectedDate
-          currentDate.setHours(0, 0, 0, 0)
-          setStartDate(currentDate)
+          setStartDate(selectedDate)
         },
         mode: 'date',
         is24Hour: true,
@@ -42,8 +36,7 @@ export const ReportCreatePage = ({ handle }) => {
       DateTimePickerAndroid.open({
         value: endDate,
         onChange: (event, selectedDate) => {
-          const currentDate = selectedDate
-          setEndDate(currentDate)
+          setEndDate(selectedDate)
         },
         mode: 'date',
         is24Hour: true,
@@ -52,9 +45,18 @@ export const ReportCreatePage = ({ handle }) => {
   }
 
   const getReport = async () => {
+    const sd = startDate
+    const curStartTime = new Date(
+      `${sd.getFullYear()}-${sd.getMonth() + 1}-${sd.getDate()}`
+    ).toISOString()
+    const ed = endDate
+    const curEndTime = new Date(
+      `${ed.getFullYear()}-${ed.getMonth() + 1}-${ed.getDate() + 1}`
+    ).toISOString()
+
     try {
       const { data: response } = await axios.get(
-        `/transactions?startDate=${startDate}&endDate=${endDate}`
+        `/transactions?startDate=${curStartTime}&endDate=${curEndTime}`
       )
       setTransactions(response.data)
     } catch (error) {
